@@ -1,0 +1,19 @@
+.app-toolbar {
+  background-color: rgb(186, 0, 92);
+}
+
+.app-logo {
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
+  color: #ffffff;
+}
+
+mat-icon {
+  margin-right: 8px;
+  color: #ffffff;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

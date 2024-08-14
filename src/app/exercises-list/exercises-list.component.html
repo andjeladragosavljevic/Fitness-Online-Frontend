@@ -1,0 +1,22 @@
+@if(isDataLoaded){
+<div>
+  <h2 class="title">Fit for Life: Daily Picks</h2>
+  <div *ngFor="let exercise of exercises">
+    <h3 class="exercise-title">{{ exercise.name || "No title available." }}</h3>
+    <p>
+      Difficulty level:
+      <span [ngStyle]="{ color: getColor(exercise.difficulty) }">
+        {{ exercise.difficulty || "No difficulty available." }}
+      </span>
+    </p>
+    <p class="exercise-instruction">
+      Instruction: {{ exercise.instructions || "No instructions available." }}
+    </p>
+    <hr />
+  </div>
+</div>
+} @else {
+<div class="spinner-div">
+  <div class="spinner" *ngIf="!isDataLoaded"></div>
+</div>
+}
