@@ -1,0 +1,44 @@
+<div class="program-detail-container" *ngIf="program && !isLoading">
+  <h2>{{ program.name }}</h2>
+  <ngx-slick-carousel
+    class="program-slider"
+    #slickModal="slick-carousel"
+    [config]="slideConfig"
+  >
+    <div ngxSlickItem *ngFor="let img of sanitizedImages" class="slide">
+      <img [src]="img" alt="{{ img }}" class="program-image" />
+    </div>
+  </ngx-slick-carousel>
+  <p class="category">Category: {{ program.category }}</p>
+  <p class="difficulty">Difficulty: {{ program.difficulty }}</p>
+  <p class="price">Price: {{ program.price | currency : "USD" : "symbol" }}</p>
+  <p class="location">Location: {{ program.location }}</p>
+  <p class="description">{{ program.description }}</p>
+
+  <div class="instructor">
+    <p>
+      Instructor:
+      <span>{{ program.instructor }} {{ program.instructor }}</span>
+    </p>
+    <p>Contact: {{ program.instructor }}</p>
+  </div>
+  <div>
+    <button mat-button>Join Program</button>
+  </div>
+  <div *ngIf="true" class="actions">
+    <button mat-button class="edit">Edit Program</button>
+    <button mat-button class="delete">Delete Program</button>
+  </div>
+</div>
+
+<div *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>
+
+<div *ngIf="error" class="error-message">
+  <p>{{ error }}</p>
+</div>
+
+<!-- <div *ngIf="isUserParticipating">
+  <p>You are already participating in this program.</p>
+</div> -->

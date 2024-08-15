@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Program } from '../models/Program';
 import { ProgramService } from '../services/program.service';
-import { NgFor, NgIf } from '@angular/common';
+import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-program-list',
   standalone: true,
-  imports: [NgIf, AppMaterialModule, RouterModule, NgFor],
+  imports: [NgIf, AppMaterialModule, RouterModule, NgFor, CurrencyPipe],
   templateUrl: './program-list.component.html',
   styleUrl: './program-list.component.css',
 })

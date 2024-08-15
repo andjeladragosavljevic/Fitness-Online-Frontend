@@ -1,5 +1,5 @@
 <div class="program-list-container">
-  <h2 class="title">Available Fitness Programs</h2>
+  <h2 class="title">My Fitness Programs</h2>
 
   <div class="spinner-div" *ngIf="isLoading">
     <div class="spinner"></div>
@@ -10,9 +10,9 @@
   </div>
 
   <div *ngIf="!isLoading && !error" class="program-list">
-    <div *ngFor="let program of programs" class="program-card">
+    <div *ngFor="let program of myPrograms" class="program-card">
       <img
-        [src]="'http://localhost:8080' + program.images[0]"
+        [src]="program.images[0]"
         alt="{{ program.name }}"
         class="program-image"
       />
@@ -21,9 +21,9 @@
       <button mat-button [routerLink]="['/programs', program.id]">
         View Details
       </button>
+      <button mat-button color="warn">Delete</button>
     </div>
   </div>
-
   <mat-paginator
     [length]="totalElements"
     [pageSize]="pageSize"
@@ -32,3 +32,5 @@
     [pageSizeOptions]="[5, 10, 25, 100]"
   ></mat-paginator>
 </div>
+
+<!-- (click)="deleteProgram(program.id) -->
