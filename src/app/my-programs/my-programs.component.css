@@ -38,6 +38,7 @@
   border: 1px solid #ccc;
   border-radius: 10px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  height: 100%;
 }
 
 .program-image {
@@ -60,4 +61,14 @@ mat-paginator {
   font-weight: bold;
   margin-bottom: 10px;
   color: rgb(255, 217, 225);
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.card-actions button {
+  margin-right: 10px;
 }

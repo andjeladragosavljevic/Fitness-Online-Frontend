@@ -65,7 +65,10 @@ export class ProgramService {
   }
 
   getProgramById(id: number): Observable<Program> {
-    console.log('🚀 ~ ProgramService ~ getProgramById ~ id:', id);
     return this.http.get<Program>(`${this.baseUrl}/${id}`);
+  }
+
+  deleteProgram(id: number): Observable<Program> {
+    return this.http.delete<Program>(`${this.baseUrl}/${id}`);
   }
 }

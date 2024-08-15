@@ -18,10 +18,22 @@
       />
       <h3>{{ program.name }}</h3>
       <p>Price: {{ program.price | currency : "USD" : "symbol" }}</p>
-      <button mat-button [routerLink]="['/programs', program.id]">
-        View Details
-      </button>
-      <button mat-button color="warn">Delete</button>
+      <div class="card-actions">
+        <button
+          mat-stroked-button
+          color="primary"
+          [routerLink]="['/my-programs', program.id]"
+        >
+          View Details
+        </button>
+        <button
+          mat-icon-button
+          color="warn"
+          onclick="deleteProgram(program.id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
   <mat-paginator

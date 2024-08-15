@@ -47,19 +47,21 @@ export class MyProgramsComponent implements OnInit {
     this.loadPrograms();
   }
 
-  // deleteProgram(id: string): void {
-  //   if (confirm('Are you sure you want to delete this program?')) {
-  //     this.programService.deleteProgram(id).subscribe({
-  //       next: () => {
-  //         this.myPrograms = this.myPrograms.filter(program => program.id !== id);
-  //         this.loadMyPrograms();
-  //         alert('Program deleted successfully.');
-  //       },
-  //       error: (err) => {
-  //         console.error('Failed to delete program', err);
-  //         alert('Failed to delete the program.');
-  //       }
-  //     });
-  //   }
-  // }
+  deleteProgram(id: number): void {
+    if (confirm('Are you sure you want to delete this program?')) {
+      this.programService.deleteProgram(id).subscribe({
+        next: () => {
+          this.myPrograms = this.myPrograms.filter(
+            (program) => program.id !== id
+          );
+          this.loadPrograms();
+          alert('Program deleted successfully.');
+        },
+        error: (err) => {
+          console.error('Failed to delete program', err);
+          alert('Failed to delete the program.');
+        },
+      });
+    }
+  }
 }
