@@ -2,14 +2,21 @@ import { Component } from '@angular/core';
 import { Program } from '../models/Program';
 import { ActivatedRoute } from '@angular/router';
 import { ProgramService } from '../services/program.service';
-import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
+import { CurrencyPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @Component({
   selector: 'app-program-detail',
   standalone: true,
-  imports: [NgIf, AppMaterialModule, NgFor, SlickCarouselModule, CurrencyPipe],
+  imports: [
+    NgIf,
+    AppMaterialModule,
+    NgFor,
+    SlickCarouselModule,
+    CurrencyPipe,
+    NgStyle,
+  ],
   templateUrl: './program-detail.component.html',
   styleUrl: './program-detail.component.css',
 })
@@ -22,13 +29,12 @@ export class ProgramDetailComponent {
   sanitizedImages: string[] = [];
 
   slideConfig = {
-    slidesToShow: 4,
+    slidesToShow: 2,
     slidesToScroll: 1,
     dots: true,
     infinite: true,
     autoplay: true,
     autoplaySpeed: 2000,
-    arrows: true,
   };
 
   constructor(
@@ -63,5 +69,18 @@ export class ProgramDetailComponent {
         this.isLoading = false;
       },
     });
+  }
+
+  getColor(difficulty: string | undefined): string {
+    switch (difficulty) {
+      case 'Beginner':
+        return 'green';
+      case 'Intermediate':
+        return 'orange';
+      case 'Advanced':
+        return 'red';
+      default:
+        return 'black';
+    }
   }
 }

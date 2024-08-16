@@ -28,17 +28,19 @@ export class MyProgramsComponent implements OnInit {
 
   loadPrograms(): void {
     this.isLoading = true;
-    this.programService.getPrograms(this.currentPage, this.pageSize).subscribe({
-      next: (data) => {
-        this.myPrograms = data.content;
-        this.totalElements = data.totalElements;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.error = 'Failed to load your programs. Please try again later.';
-        this.isLoading = false;
-      },
-    });
+    this.programService
+      .getMyPrograms(this.currentPage, this.pageSize)
+      .subscribe({
+        next: (data) => {
+          this.myPrograms = data.content;
+          this.totalElements = data.totalElements;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.error = 'Failed to load your programs. Please try again later.';
+          this.isLoading = false;
+        },
+      });
   }
 
   onPageChange(event: any): void {

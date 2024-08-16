@@ -1,14 +1,10 @@
-.listing-location::before {
-  content: url("/assets/location-pin.svg") / "";
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 180px;
+  height: 100%;
 }
-.listing-location {
-  font-size: 24pt;
-  margin-bottom: 15px;
-}
-body {
-  margin-bottom: 40px;
-}
-
 .program-detail-container {
   max-width: 800px;
   margin: 40px auto 40px auto;
@@ -34,21 +30,17 @@ body {
 .program-detail-container .category,
 .program-detail-container .difficulty,
 .program-detail-container .price,
-.program-detail-container .location {
+.program-detail-container .location,
+.program-detail-container .description,
+.program-detail-container .instructor {
   font-size: 18px;
   font-weight: 500;
   color: #333;
   margin-bottom: 10px;
 }
 
-.program-detail-container .instructor {
-  margin-top: 20px;
-  font-size: 18px;
-  color: #333;
-}
-
 .program-detail-container .instructor span {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .program-detail-container .actions {
@@ -83,7 +75,6 @@ body {
 .program-slider {
   margin-bottom: 20px;
   width: 100%;
-  overflow: hidden;
 }
 
 .slide img {
@@ -91,4 +82,54 @@ body {
   max-height: 400px;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.price::before {
+  background-image: url("/assets/4899556.png");
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content: "";
+  padding-right: 5px;
+}
+
+.location::before {
+  background-image: url("/assets/location-pin.svg");
+  background-size: 30px 30px;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  content: "";
+  padding-right: 5px;
+}
+
+.specific-attributes {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.specific-attributes h3 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.specific-attributes .attribute {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.specific-attributes .attribute-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.specific-attributes .attribute-value {
+  font-weight: 400;
+  color: #555;
 }

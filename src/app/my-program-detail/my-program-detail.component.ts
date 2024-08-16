@@ -1,14 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Program } from '../models/Program';
-import { ActivatedRoute } from '@angular/router';
+import { Program, SpecificAttribute } from '../models/Program';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProgramService } from '../services/program.service';
-import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
+import { CurrencyPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { AppMaterialModule } from '../app-material/app-material.module';
 
 @Component({
   selector: 'app-my-program-detail',
   standalone: true,
-  imports: [NgIf, NgFor, SlickCarouselModule, CurrencyPipe],
+  imports: [
+    NgIf,
+    NgFor,
+    SlickCarouselModule,
+    CurrencyPipe,
+    NgStyle,
+    AppMaterialModule,
+  ],
   templateUrl: './my-program-detail.component.html',
   styleUrl: './my-program-detail.component.css',
 })
@@ -21,18 +29,18 @@ export class MyProgramDetailComponent implements OnInit {
   sanitizedImages: string[] = [];
 
   slideConfig = {
-    slidesToShow: 4,
+    slidesToShow: 2,
     slidesToScroll: 1,
     dots: true,
     infinite: true,
     autoplay: true,
     autoplaySpeed: 2000,
-    arrows: true,
   };
 
   constructor(
     private route: ActivatedRoute,
-    private programService: ProgramService
+    private programService: ProgramService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +54,7 @@ export class MyProgramDetailComponent implements OnInit {
     this.programService.getProgramById(id).subscribe({
       next: (data) => {
         this.program = data;
+
         this.sanitizedImages = data.images.map(
           (img) => `${this.baseUrl}${img}`
         );
@@ -57,5 +66,34 @@ export class MyProgramDetailComponent implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  getColor(difficulty: string | undefined): string {
+    switch (difficulty) {
+      case 'Beginner':
+        return 'green';
+      case 'Intermediate':
+        return 'orange';
+      case 'Advanced':
+        return 'red';
+      default:
+        return 'black';
+    }
+  }
+
+  deleteProgram(id: number): void {
+    if (confirm('Are you sure you want to delete this program?')) {
+      this.programService.deleteProgram(id).subscribe({
+        next: () => {
+          this.router.navigate(['/my-programs']);
+
+          alert('Program deleted successfully.');
+        },
+        error: (err) => {
+          console.error('Failed to delete program', err);
+          alert('Failed to delete the program.');
+        },
+      });
+    }
   }
 }

@@ -9,25 +9,52 @@
       <img [src]="img" alt="{{ img }}" class="program-image" />
     </div>
   </ngx-slick-carousel>
-  <p class="category">Category: {{ program.category }}</p>
-  <p class="difficulty">Difficulty: {{ program.difficulty }}</p>
-  <p class="price">Price: {{ program.price | currency : "USD" : "symbol" }}</p>
-  <p class="location">Location: {{ program.location }}</p>
+  <p class="category">Category: {{ program.category.name }}</p>
+  <p class="difficulty">
+    Difficulty Level:
+    <span [ngStyle]="{ color: getColor(program.difficultyLevel) }">
+      {{ program.difficultyLevel }}
+    </span>
+  </p>
+  <p class="price">{{ program.price | currency : "USD" : "symbol" }}</p>
+  <p class="location">{{ program.location }}</p>
   <p class="description">{{ program.description }}</p>
 
-  <div class="instructor">
-    <p>
-      Instructor:
-      <span>{{ program.instructor }} {{ program.instructor }}</span>
-    </p>
-    <p>Contact: {{ program.instructor }}</p>
+  <div
+    *ngIf="program.specificAttributes.length > 0"
+    class="specific-attributes"
+  >
+    <h3>Specific Attributes</h3>
+    <div class="attribute" *ngFor="let attribute of program.specificAttributes">
+      <span class="attribute-name">{{ attribute.name }}:</span>
+      <span class="attribute-value">{{ attribute.value }}</span>
+    </div>
   </div>
+
   <div>
-    <button mat-button>Join Program</button>
+    <p class="instructor">
+      Instructor:
+      <span
+        >{{ program.instructor.firstName }}
+        {{ program.instructor.lastName }}</span
+      >
+    </p>
+    <p class="instructor">Contact: {{ program.instructor.email }}</p>
   </div>
-  <div *ngIf="true" class="actions">
-    <button mat-button class="edit">Edit Program</button>
-    <button mat-button class="delete">Delete Program</button>
+
+  <div class="actions">
+    <button mat-stroked-button class="edit-button">
+      <mat-icon>edit</mat-icon>
+      Edit
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      (click)="deleteProgram(program.id)"
+    >
+      <mat-icon>delete</mat-icon>
+      Delete
+    </button>
   </div>
 </div>
 

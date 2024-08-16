@@ -19,28 +19,18 @@ export class ProgramService {
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
-  getPrograms(
-    page: number,
-    size: number
-  ): Observable<{ content: Program[]; totalElements: number }> {
-    const paginationParams = new HttpParams()
+  getPrograms(page: number, size: number): Observable<any> {
+    let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
+    return this.http.get<any>(this.baseUrl, { params });
+  }
 
-    return this.http
-      .get<{ content: Program[]; totalElements: number }>(this.baseUrl, {
-        params: paginationParams,
-      })
-      .pipe(
-        catchError((error) => {
-          this.snackBar.open('Failed to load programs!', 'Close', {
-            duration: 3000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-          });
-          return throwError(() => error);
-        })
-      );
+  getMyPrograms(page: number, size: number): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<any>(`${this.baseUrl}/my`, { params });
   }
 
   createProgram(program: Program): Observable<Program> {

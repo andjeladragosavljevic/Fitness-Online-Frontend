@@ -6,17 +6,18 @@ export interface Program {
   description: string;
   category: Category;
   price: number;
-  difficulty: string;
+  difficultyLevel: string;
   duration: number;
   location: string; // npr. 'online', 'teretana', 'park'
   images: string[]; // Niz URL-ova slika
   instructor: Instructor;
   contact: string;
+  specificAttributes: SpecificAttribute[];
 }
 
-export interface SpecifičniAtributi {
+export interface SpecificAttribute {
   name: string;
-  category: Category;
+  value: string;
 }
 
 export interface Instructor {

@@ -9,25 +9,42 @@
       <img [src]="img" alt="{{ img }}" class="program-image" />
     </div>
   </ngx-slick-carousel>
-  <p class="category">Category: {{ program.category }}</p>
-  <p class="difficulty">Difficulty: {{ program.difficulty }}</p>
-  <p class="price">Price: {{ program.price | currency : "USD" : "symbol" }}</p>
-  <p class="location">Location: {{ program.location }}</p>
+  <p class="category">Category: {{ program.category.name }}</p>
+  <p class="difficulty">
+    Difficulty Level:
+    <span [ngStyle]="{ color: getColor(program.difficultyLevel) }">
+      {{ program.difficultyLevel }}
+    </span>
+  </p>
+  <p class="price listing-price">
+    {{ program.price | currency : "USD" : "symbol" }}
+  </p>
+  <p class="location">{{ program.location }}</p>
   <p class="description">{{ program.description }}</p>
 
-  <div class="instructor">
-    <p>
+  <div
+    *ngIf="program.specificAttributes.length > 0"
+    class="specific-attributes"
+  >
+    <h3>Specific Attributes</h3>
+    <div class="attribute" *ngFor="let attribute of program.specificAttributes">
+      <span class="attribute-name">{{ attribute.name }}:</span>
+      <span class="attribute-value">{{ attribute.value }}</span>
+    </div>
+  </div>
+
+  <div>
+    <p class="instructor">
       Instructor:
-      <span>{{ program.instructor }} {{ program.instructor }}</span>
+      <span
+        >{{ program.instructor.firstName }}
+        {{ program.instructor.lastName }}</span
+      >
     </p>
-    <p>Contact: {{ program.instructor }}</p>
+    <p class="instructor">Contact: {{ program.instructor.email }}</p>
   </div>
   <div>
     <button mat-button>Join Program</button>
-  </div>
-  <div *ngIf="true" class="actions">
-    <button mat-button class="edit">Edit Program</button>
-    <button mat-button class="delete">Delete Program</button>
   </div>
 </div>
 

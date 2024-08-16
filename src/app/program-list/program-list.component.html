@@ -17,7 +17,7 @@
         class="program-image"
       />
       <h3>{{ program.name }}</h3>
-      <p>Price: {{ program.price | currency : "USD" : "symbol" }}</p>
+      <p class="price">{{ program.price | currency : "USD" : "symbol" }}</p>
       <button mat-button [routerLink]="['/programs', program.id]">
         View Details
       </button>
