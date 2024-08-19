@@ -61,4 +61,23 @@ export class ProgramService {
   deleteProgram(id: number): Observable<Program> {
     return this.http.delete<Program>(`${this.baseUrl}/${id}`);
   }
+
+  getFilteredPrograms(
+    filters: any,
+    page: number,
+    size: number
+  ): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    // Dodavanje filtera u parametre
+    Object.keys(filters).forEach((key) => {
+      if (filters[key]) {
+        params = params.set(key, filters[key]);
+      }
+    });
+
+    return this.http.get<any>(`${this.baseUrl}/filter`, { params });
+  }
 }

@@ -1,3 +1,123 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title class="panel-title">Filters</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <form class="container" (ngSubmit)="applyFilters()">
+    <!-- First Row: Name, Description, Category -->
+    <div class="row">
+      <div class="col-sm-5">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="filters['name']"
+            name="name"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-sm-5">
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="filters['description']"
+            name="description"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-sm-5">
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select [(ngModel)]="filters['category']" name="category">
+            <mat-option
+              *ngFor="let category of categories"
+              [value]="category.name"
+            >
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Second Row: Start Date and End Date -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="startDatePicker" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="startDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>End Date</mat-label>
+          <input matInput [matDatepicker]="endDatePicker" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="endDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Third Row: Min Price and Max Price -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Min Price</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="filters['minPrice']"
+            name="minPrice"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Max Price</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="filters['maxPrice']"
+            name="maxPrice"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Specific Attributes -->
+    <div class="attribute-filters">
+      <h3>Specific Attributes</h3>
+      <div *ngFor="let attr of specificAttributes" class="row">
+        <div class="row-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>{{ attr.name }}</mat-label>
+            <input
+              matInput
+              [(ngModel)]="filters[attr.name]"
+              name="{{ attr.name }}"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <button mat-raised-button color="primary" type="submit">
+      Apply Filters
+    </button>
+  </form>
+</mat-expansion-panel>
+
 <div class="program-list-container">
   <h2 class="title">Available Fitness Programs</h2>
 

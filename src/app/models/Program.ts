@@ -7,7 +7,8 @@ export interface Program {
   category: Category;
   price: number;
   difficultyLevel: string;
-  duration: number;
+  startDate: string;
+  endDate: string;
   location: string; // npr. 'online', 'teretana', 'park'
   images: string[]; // Niz URL-ova slika
   instructor: Instructor;
