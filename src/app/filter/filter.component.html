@@ -1,0 +1,174 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title class="panel-title">Filters</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <form class="container" [formGroup]="filterForm">
+    <!-- First Row: Name, Description, Location -->
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="custom-width">
+          <mat-label>Name</mat-label>
+          <input formControlName="name" matInput type="text" name="name" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="custom-width">
+          <mat-label>Description</mat-label>
+          <input
+            formControlName="description"
+            matInput
+            type="text"
+            name="description"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="custom-width">
+          <mat-icon matPrefix>location_on</mat-icon>
+          <mat-label>Location</mat-label>
+          <input
+            formControlName="location"
+            matInput
+            type="text"
+            name="location"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Second Row: User, Difficulty, Category -->
+    <div class="row">
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="custom-width">
+          <mat-label>Instructor</mat-label>
+          <input
+            formControlName="instructor"
+            matInput
+            type="text"
+            name="instructor"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="custom-width">
+          <mat-icon matPrefix>stars</mat-icon>
+          <mat-label>Difficulty Level</mat-label>
+          <mat-select formControlName="difficultyLevel" name="difficultyLevel">
+            <mat-option *ngFor="let level of difficultyLevels" [value]="level">
+              {{ level }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="outline" class="custom-width">
+          <mat-label>Category</mat-label>
+          <mat-select name="category" formControlName="category">
+            <mat-option *ngFor="let category of categories" [value]="category">
+              {{ category.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Third Row: Start Date and End Date -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Start Date</mat-label>
+          <input
+            formControlName="startDate"
+            matInput
+            [matDatepicker]="startDatePicker"
+          />
+          <mat-datepicker-toggle
+            matPrefix
+            [for]="startDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>End Date</mat-label>
+          <input
+            formControlName="endDate"
+            matInput
+            [matDatepicker]="endDatePicker"
+          />
+          <mat-datepicker-toggle
+            matPrefix
+            [for]="endDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Fourth Row: Min Price and Max Price -->
+    <div class="row">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-icon matPrefix>attach_money</mat-icon>
+          <mat-label>Min Price</mat-label>
+          <input
+            formControlName="minPrice"
+            matInput
+            type="number"
+            name="minPrice"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-icon matPrefix>attach_money</mat-icon>
+          <mat-label>Max Price</mat-label>
+          <input
+            formControlName="maxPrice"
+            matInput
+            type="number"
+            name="maxPrice"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Specific Attributes -->
+    <div
+      *ngIf="filterForm.get('specificAttributes')"
+      formGroupName="specificAttributes"
+      class="attribute-filters"
+    >
+      <h3>Specific Attributes</h3>
+      <div *ngFor="let attr of specificAttributes" class="row">
+        <div class="row-md-4">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ attr.name }}</mat-label>
+            <input
+              matInput
+              [formControlName]="attr.name"
+              name="{{ attr.name }}"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <mat-error *ngIf="filterForm.hasError('dateInvalid')"
+      >Start date cannot be after end date.</mat-error
+    >
+    <mat-error *ngIf="filterForm.hasError('priceInvalid')"
+      >Min price cannot be greater than max price.</mat-error
+    >
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      (click)="applyFilters()"
+    >
+      Apply Filters
+    </button>
+  </form>
+</mat-expansion-panel>

@@ -1,0 +1,125 @@
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AppMaterialModule } from '../app-material/app-material.module';
+import {
+  AbstractControlOptions,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { NgFor, NgIf } from '@angular/common';
+import { CategoryService } from '../services/category.service';
+import { AttributeService } from '../services/attribute.service';
+import { Attribute } from '../models/Attribute';
+import { DifficultyLevel } from '../models/DifficultyLevel';
+
+@Component({
+  selector: 'app-filter',
+  standalone: true,
+  imports: [AppMaterialModule, ReactiveFormsModule, FormsModule, NgFor, NgIf],
+  templateUrl: './filter.component.html',
+  styleUrl: './filter.component.css',
+})
+export class FilterComponent implements OnInit {
+  @Output() filtersApplied = new EventEmitter<FormGroup>();
+  categories: any[] = [];
+  isLoading = true;
+  error: string | null = null;
+  specificAttributes: Attribute[] = [];
+  difficultyLevels = Object.values(DifficultyLevel);
+
+  filterForm!: FormGroup;
+
+  constructor(
+    private categoryService: CategoryService,
+    private attributeService: AttributeService,
+    private fb: FormBuilder
+  ) {
+    this.filterForm = this.fb.group(
+      {
+        name: [''],
+        description: [''],
+        location: [''],
+        instructor: [''],
+        difficultyLevel: [''],
+        category: [''],
+        startDate: [''],
+        endDate: [''],
+        minPrice: [''],
+        maxPrice: [''],
+      },
+      {
+        validators: this.dateAndPriceValidator.bind(this),
+      } as AbstractControlOptions
+    );
+  }
+
+  onCategoryChange() {
+    this.filterForm.get('category')?.valueChanges.subscribe((category) => {
+      const specificAttributesGroup = new FormGroup({});
+
+      this.attributeService
+        .getAttributesForCategory(category.id)
+        .subscribe((attributes) => {
+          this.specificAttributes = attributes;
+
+          attributes.forEach((attr) => {
+            specificAttributesGroup.addControl(attr.name, new FormControl(''));
+          });
+
+          if (this.filterForm.contains('specificAttributes')) {
+            this.filterForm.removeControl('specificAttributes');
+          }
+
+          this.filterForm.addControl(
+            'specificAttributes',
+            specificAttributesGroup
+          );
+        });
+    });
+  }
+
+  dateAndPriceValidator(group: FormGroup): { [key: string]: boolean } | null {
+    const startDate = group.get('startDate')?.value;
+    console.log(
+      '🚀 ~ FilterComponent ~ dateAndPriceValidator ~ startDate:',
+      startDate
+    );
+    const endDate = group.get('endDate')?.value;
+    const minPrice = group.get('minPrice')?.value;
+    const maxPrice = group.get('maxPrice')?.value;
+
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      return { dateInvalid: true };
+    }
+
+    if (minPrice !== null && maxPrice !== null && minPrice > maxPrice) {
+      return { priceInvalid: true };
+    }
+
+    return null;
+  }
+
+  applyFilters() {
+    this.filtersApplied.emit(this.filterForm);
+  }
+
+  ngOnInit(): void {
+    this.loadCategories();
+    this.onCategoryChange();
+  }
+
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (err) => {
+        this.error = 'Failed to load programs';
+        console.error(err);
+        this.isLoading = false;
+      },
+    });
+  }
+}

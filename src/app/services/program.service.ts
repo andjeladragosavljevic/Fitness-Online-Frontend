@@ -19,7 +19,7 @@ export class ProgramService {
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
-  getPrograms(page: number, size: number): Observable<any> {
+  getAllPrograms(page: number, size: number): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
@@ -62,21 +62,25 @@ export class ProgramService {
     return this.http.delete<Program>(`${this.baseUrl}/${id}`);
   }
 
-  getFilteredPrograms(
+  getPrograms(
     filters: any,
+    ownPrograms: boolean,
     page: number,
     size: number
   ): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('ownPrograms', ownPrograms.toString());
 
-    // Dodavanje filtera u parametre
-    Object.keys(filters).forEach((key) => {
-      if (filters[key]) {
-        params = params.set(key, filters[key]);
-      }
-    });
+    if (filters && Object.keys(filters).length > 0) {
+      Object.keys(filters)?.forEach((key) => {
+        console.log('🚀 ~ ProgramService ~ Object.keys ~ filters:', filters);
+        if (filters[key]) {
+          params = params.set(key, filters[key]);
+        }
+      });
+    }
 
     return this.http.get<any>(`${this.baseUrl}/filter`, { params });
   }

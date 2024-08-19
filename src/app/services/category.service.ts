@@ -8,10 +8,9 @@ import { Category } from '../models/Category';
 })
 export class CategoryService {
   constructor(private http: HttpClient) {}
+  url = 'http://localhost:8080/api/categories';
 
   getCategories(): Observable<Category[]> {
-    let url = 'http://localhost:8080/api/categories';
-
-    return this.http.get<Category[]>(url);
+    return this.http.get<Category[]>(this.url);
   }
 }
