@@ -13,6 +13,7 @@ import { CategoryService } from '../services/category.service';
 import { AttributeService } from '../services/attribute.service';
 import { Attribute } from '../models/Attribute';
 import { DifficultyLevel } from '../models/DifficultyLevel';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @Component({
   selector: 'app-filter',
@@ -20,6 +21,7 @@ import { DifficultyLevel } from '../models/DifficultyLevel';
   imports: [AppMaterialModule, ReactiveFormsModule, FormsModule, NgFor, NgIf],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css',
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'ja-JP' }],
 })
 export class FilterComponent implements OnInit {
   @Output() filtersApplied = new EventEmitter<FormGroup>();
@@ -60,7 +62,7 @@ export class FilterComponent implements OnInit {
       const specificAttributesGroup = new FormGroup({});
 
       this.attributeService
-        .getAttributesForCategory(category.id)
+        .getAttributesForCategory(category)
         .subscribe((attributes) => {
           this.specificAttributes = attributes;
 
@@ -82,10 +84,6 @@ export class FilterComponent implements OnInit {
 
   dateAndPriceValidator(group: FormGroup): { [key: string]: boolean } | null {
     const startDate = group.get('startDate')?.value;
-    console.log(
-      '🚀 ~ FilterComponent ~ dateAndPriceValidator ~ startDate:',
-      startDate
-    );
     const endDate = group.get('endDate')?.value;
     const minPrice = group.get('minPrice')?.value;
     const maxPrice = group.get('maxPrice')?.value;
@@ -102,6 +100,7 @@ export class FilterComponent implements OnInit {
   }
 
   applyFilters() {
+    console.log('🚀 ~ FilterComponent ~ applyFilters ~ applyFilters:');
     this.filtersApplied.emit(this.filterForm);
   }
 
@@ -116,7 +115,7 @@ export class FilterComponent implements OnInit {
         this.categories = categories;
       },
       error: (err) => {
-        this.error = 'Failed to load programs';
+        this.error = 'Failed to load categories';
         console.error(err);
         this.isLoading = false;
       },

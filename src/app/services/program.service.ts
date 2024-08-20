@@ -68,20 +68,20 @@ export class ProgramService {
     page: number,
     size: number
   ): Observable<any> {
+    console.log('🚀 ~ ProgramService ~ filters:', filters);
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())
       .set('ownPrograms', ownPrograms.toString());
 
-    if (filters && Object.keys(filters).length > 0) {
-      Object.keys(filters)?.forEach((key) => {
-        console.log('🚀 ~ ProgramService ~ Object.keys ~ filters:', filters);
+    if (filters) {
+      Object.keys(filters).forEach((key) => {
         if (filters[key]) {
-          params = params.set(key, filters[key]);
+          params = params.append(key, filters[key]);
         }
       });
     }
 
-    return this.http.get<any>(`${this.baseUrl}/filter`, { params });
+    return this.http.get<any>(`${this.baseUrl}/other-programs`, { params });
   }
 }

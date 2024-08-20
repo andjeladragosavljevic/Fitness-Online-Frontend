@@ -13,6 +13,7 @@
   <div *ngIf="!isLoading && !error" class="program-list">
     <div *ngFor="let program of programs" class="program-card">
       <img
+        *ngIf="program?.images?.length ?? false"
         [src]="'http://localhost:8080' + program.images[0]"
         alt="{{ program.name }}"
         class="program-image"

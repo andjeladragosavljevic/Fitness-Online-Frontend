@@ -5,7 +5,6 @@ import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { RouterModule } from '@angular/router';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CategoryService } from '../services/category.service';
 import { FilterComponent } from '../filter/filter.component';
 
 @Component({
@@ -45,6 +44,7 @@ export class ProgramListComponent implements OnInit {
   }
 
   loadPrograms(): void {
+    console.log('🚀 ~ ProgramListComponent ~ loadPrograms ~ loadPrograms:');
     this.isLoading = true;
     this.programService
       .getPrograms(
