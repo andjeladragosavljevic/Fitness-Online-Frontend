@@ -68,7 +68,6 @@ export class ProgramService {
     page: number,
     size: number
   ): Observable<any> {
-    console.log('🚀 ~ ProgramService ~ filters:', filters);
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString())

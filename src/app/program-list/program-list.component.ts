@@ -44,7 +44,6 @@ export class ProgramListComponent implements OnInit {
   }
 
   loadPrograms(): void {
-    console.log('🚀 ~ ProgramListComponent ~ loadPrograms ~ loadPrograms:');
     this.isLoading = true;
     this.programService
       .getPrograms(
@@ -68,10 +67,6 @@ export class ProgramListComponent implements OnInit {
   }
 
   onFiltersApplied(filters: any) {
-    console.log(
-      '🚀 ~ ProgramListComponent ~ onFiltersApplied ~ filters:',
-      filters
-    );
     this.filters = filters;
     this.loadPrograms();
   }

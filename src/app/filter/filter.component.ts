@@ -8,23 +8,34 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+import { JsonPipe, NgFor, NgIf } from '@angular/common';
 import { CategoryService } from '../services/category.service';
 import { AttributeService } from '../services/attribute.service';
 import { Attribute } from '../models/Attribute';
 import { DifficultyLevel } from '../models/DifficultyLevel';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import 'moment/locale/fr';
+import moment from 'moment';
 
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [AppMaterialModule, ReactiveFormsModule, FormsModule, NgFor, NgIf],
+  imports: [
+    AppMaterialModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgFor,
+    NgIf,
+    JsonPipe,
+    MatMomentDateModule,
+  ],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css',
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'ja-JP' }],
 })
 export class FilterComponent implements OnInit {
   @Output() filtersApplied = new EventEmitter<FormGroup>();
+
   categories: any[] = [];
   isLoading = true;
   error: string | null = null;
@@ -46,8 +57,8 @@ export class FilterComponent implements OnInit {
         instructor: [''],
         difficultyLevel: [''],
         category: [''],
-        startDate: [''],
-        endDate: [''],
+        startDate: [null],
+        endDate: [null],
         minPrice: [''],
         maxPrice: [''],
       },
@@ -100,7 +111,14 @@ export class FilterComponent implements OnInit {
   }
 
   applyFilters() {
-    console.log('🚀 ~ FilterComponent ~ applyFilters ~ applyFilters:');
+    this.filterForm.value.startDate =
+      this.filterForm.value.startDate != null
+        ? moment(this.filterForm.value.startDate).format('YYYY-MM-DD')
+        : null;
+    this.filterForm.value.endDate =
+      this.filterForm.value.endDate != null
+        ? moment(this.filterForm.value.endDate).format('YYYY-MM-DD')
+        : null;
     this.filtersApplied.emit(this.filterForm);
   }
 

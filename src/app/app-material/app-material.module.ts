@@ -62,6 +62,7 @@ const materialModules = [
   MatNativeDateModule,
   MatDialogModule,
   MatSliderModule,
+  MatDatepickerModule,
 ];
 
 @NgModule({
