@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import {
   AbstractControlOptions,
@@ -17,6 +17,7 @@ import { DifficultyLevel } from '../models/DifficultyLevel';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import 'moment/locale/fr';
 import moment from 'moment';
+import { ProgramStatus } from '../models/ProgramStatus';
 
 @Component({
   selector: 'app-filter',
@@ -35,12 +36,13 @@ import moment from 'moment';
 })
 export class FilterComponent implements OnInit {
   @Output() filtersApplied = new EventEmitter<FormGroup>();
-
+  @Input() isOwnPrograms = true;
   categories: any[] = [];
   isLoading = true;
   error: string | null = null;
   specificAttributes: Attribute[] = [];
   difficultyLevels = Object.values(DifficultyLevel);
+  programStatus = Object.values(ProgramStatus);
 
   filterForm!: FormGroup;
 
@@ -61,6 +63,7 @@ export class FilterComponent implements OnInit {
         endDate: [null],
         minPrice: [''],
         maxPrice: [''],
+        status: [''],
       },
       {
         validators: this.dateAndPriceValidator.bind(this),
@@ -119,6 +122,16 @@ export class FilterComponent implements OnInit {
       this.filterForm.value.endDate != null
         ? moment(this.filterForm.value.endDate).format('YYYY-MM-DD')
         : null;
+
+    const specificAttributes = this.filterForm.get('specificAttributes')?.value;
+    if (specificAttributes) {
+      Object.keys(specificAttributes).forEach((key) => {
+        const value = specificAttributes[key];
+        if (value) {
+          this.filterForm.value[`specificAttribute_${key}`] = value;
+        }
+      });
+    }
     this.filtersApplied.emit(this.filterForm);
   }
 

@@ -16,6 +16,10 @@
       {{ program.difficultyLevel }}
     </span>
   </p>
+  <p class="duration">
+    Duration:
+    {{ program.startDate }} - {{ program.endDate }}
+  </p>
   <p class="price listing-price">
     {{ program.price | currency : "USD" : "symbol" }}
   </p>
@@ -47,6 +51,7 @@
     <button mat-button>Join Program</button>
   </div>
 </div>
+<div class="footer-spacer"></div>
 
 <div *ngIf="isLoading">
   <div class="spinner"></div>

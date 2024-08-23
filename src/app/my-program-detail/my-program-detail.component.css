@@ -1,8 +1,6 @@
-:host {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 180px;
+html,
+:host,
+body {
   height: 100%;
 }
 .program-detail-container {
@@ -32,7 +30,8 @@
 .program-detail-container .price,
 .program-detail-container .location,
 .program-detail-container .description,
-.program-detail-container .instructor {
+.program-detail-container .instructor,
+.program-detail-container .duration {
   font-size: 18px;
   font-weight: 500;
   color: #333;
@@ -136,4 +135,8 @@
 
 .edit-button {
   color: #fccf7d;
+}
+
+.footer-spacer {
+  height: 40px;
 }

@@ -1,24 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Program } from '../models/Program';
 import { ProgramService } from '../services/program.service';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { RouterModule } from '@angular/router';
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
+import { FormGroup } from '@angular/forms';
+import { FilterComponent } from '../filter/filter.component';
 
 @Component({
   selector: 'app-my-programs',
   standalone: true,
-  imports: [AppMaterialModule, RouterModule, NgFor, NgIf, CurrencyPipe],
+  imports: [
+    AppMaterialModule,
+    RouterModule,
+    NgFor,
+    NgIf,
+    CurrencyPipe,
+    FilterComponent,
+    FilterComponent,
+  ],
   templateUrl: './my-programs.component.html',
   styleUrl: './my-programs.component.css',
 })
 export class MyProgramsComponent implements OnInit {
+  @Input() isOwnPrograms = true;
   myPrograms: Program[] = [];
+
+  filters!: FormGroup;
+
   totalElements = 0;
   currentPage = 0;
   pageSize = 10;
   isLoading = true;
   error: string | null = null;
+
+  ownPrograms = true;
 
   constructor(private programService: ProgramService) {}
 
@@ -29,7 +45,7 @@ export class MyProgramsComponent implements OnInit {
   loadPrograms(): void {
     this.isLoading = true;
     this.programService
-      .getMyPrograms(this.currentPage, this.pageSize)
+      .getMyPrograms(this.filters?.value, this.currentPage, this.pageSize)
       .subscribe({
         next: (data) => {
           this.myPrograms = data.content;
@@ -65,5 +81,10 @@ export class MyProgramsComponent implements OnInit {
         },
       });
     }
+  }
+
+  onFiltersApplied(filters: any) {
+    this.filters = filters;
+    this.loadPrograms();
   }
 }

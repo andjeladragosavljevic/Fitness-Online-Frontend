@@ -16,6 +16,10 @@
       {{ program.difficultyLevel }}
     </span>
   </p>
+  <p class="duration">
+    Duration:
+    {{ program.startDate }} - {{ program.endDate }}
+  </p>
   <p class="price">{{ program.price | currency : "USD" : "symbol" }}</p>
   <p class="location">{{ program.location }}</p>
   <p class="description">{{ program.description }}</p>
@@ -31,7 +35,7 @@
     </div>
   </div>
 
-  <div>
+  <!-- <div>
     <p class="instructor">
       Instructor:
       <span
@@ -40,7 +44,7 @@
       >
     </p>
     <p class="instructor">Contact: {{ program.instructor.email }}</p>
-  </div>
+  </div> -->
 
   <div class="actions">
     <button mat-stroked-button class="edit-button">
@@ -57,6 +61,7 @@
     </button>
   </div>
 </div>
+<div class="footer-spacer"></div>
 
 <div *ngIf="isLoading">
   <div class="spinner"></div>

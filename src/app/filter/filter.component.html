@@ -40,6 +40,7 @@
     <!-- Second Row: User, Difficulty, Category -->
     <div class="row">
       <div class="col-md-4">
+        @if(!this.isOwnPrograms){
         <mat-form-field appearance="outline" class="custom-width">
           <mat-label>Instructor</mat-label>
           <input
@@ -49,6 +50,17 @@
             name="instructor"
           />
         </mat-form-field>
+        } @else{
+        <mat-form-field appearance="outline" class="custom-width">
+          <mat-label>Program status</mat-label>
+          <mat-select formControlName="status">
+            <mat-option *ngFor="let status of programStatus" [value]="status">
+              {{ status }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        }
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="outline" class="custom-width">
@@ -158,7 +170,9 @@
         </div>
       </div>
     </div>
-
+    <mat-error *ngIf="filterForm.hasError('dateInvalid')"
+      >Start date cannot be after end date.</mat-error
+    >
     <mat-error *ngIf="filterForm.hasError('priceInvalid')"
       >Min price cannot be greater than max price.</mat-error
     >

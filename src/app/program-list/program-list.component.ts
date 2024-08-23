@@ -46,12 +46,7 @@ export class ProgramListComponent implements OnInit {
   loadPrograms(): void {
     this.isLoading = true;
     this.programService
-      .getPrograms(
-        this.filters?.value,
-        this.ownPrograms,
-        this.currentPage,
-        this.pageSize
-      )
+      .getPrograms(this.filters?.value, this.currentPage, this.pageSize)
       .subscribe({
         next: (data) => {
           this.programs = data.content;
@@ -59,7 +54,7 @@ export class ProgramListComponent implements OnInit {
           this.isLoading = false;
         },
         error: (err) => {
-          this.error = 'Failed to load programs';
+          this.error = 'Failed to load your programs. Please try again later.';
           console.error(err);
           this.isLoading = false;
         },

@@ -26,13 +26,6 @@ export class ProgramService {
     return this.http.get<any>(this.baseUrl, { params });
   }
 
-  getMyPrograms(page: number, size: number): Observable<any> {
-    let params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-    return this.http.get<any>(`${this.baseUrl}/my`, { params });
-  }
-
   createProgram(program: Program): Observable<Program> {
     return this.http.post<Program>(this.baseUrl, program).pipe(
       tap(() => {
@@ -62,16 +55,10 @@ export class ProgramService {
     return this.http.delete<Program>(`${this.baseUrl}/${id}`);
   }
 
-  getPrograms(
-    filters: any,
-    ownPrograms: boolean,
-    page: number,
-    size: number
-  ): Observable<any> {
+  getPrograms(filters: any, page: number, size: number): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString())
-      .set('ownPrograms', ownPrograms.toString());
+      .set('size', size.toString());
 
     if (filters) {
       Object.keys(filters).forEach((key) => {
@@ -82,5 +69,20 @@ export class ProgramService {
     }
 
     return this.http.get<any>(`${this.baseUrl}/other-programs`, { params });
+  }
+
+  getMyPrograms(filters: any, page: number, size: number): Observable<any> {
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    if (filters) {
+      Object.keys(filters).forEach((key) => {
+        if (filters[key]) {
+          params = params.append(key, filters[key]);
+        }
+      });
+    }
+    return this.http.get<any>(`${this.baseUrl}/my-programs`, { params });
   }
 }
