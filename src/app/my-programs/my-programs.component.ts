@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { CurrencyPipe, NgFor, NgIf } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { FilterComponent } from '../filter/filter.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-my-programs',
@@ -28,10 +29,12 @@ export class MyProgramsComponent implements OnInit {
 
   filters!: FormGroup;
 
-  totalElements = 0;
-  currentPage = 0;
+  length = 50;
   pageSize = 10;
-  isLoading = true;
+  pageIndex = 0;
+  pageEvent!: PageEvent;
+
+  isDataLoaded = false;
   error: string | null = null;
 
   ownPrograms = true;
@@ -43,25 +46,26 @@ export class MyProgramsComponent implements OnInit {
   }
 
   loadPrograms(): void {
-    this.isLoading = true;
     this.programService
-      .getMyPrograms(this.filters?.value, this.currentPage, this.pageSize)
+      .getMyPrograms(this.filters?.value, this.pageIndex, this.pageSize)
       .subscribe({
         next: (data) => {
           this.myPrograms = data.content;
-          this.totalElements = data.totalElements;
-          this.isLoading = false;
+          this.length = data.totalElements;
+          this.isDataLoaded = true;
         },
         error: (err) => {
           this.error = 'Failed to load your programs. Please try again later.';
-          this.isLoading = false;
+          this.isDataLoaded = false;
         },
       });
   }
 
-  onPageChange(event: any): void {
-    this.currentPage = event.pageIndex;
+  onPageChange(event: PageEvent): void {
+    this.pageEvent = event;
     this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+
     this.loadPrograms();
   }
 

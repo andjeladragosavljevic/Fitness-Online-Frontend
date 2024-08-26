@@ -152,4 +152,11 @@ export class FilterComponent implements OnInit {
       },
     });
   }
+
+  clearFilters() {
+    this.filterForm.reset();
+    if (this.filterForm.contains('specificAttributes')) {
+      this.filterForm.removeControl('specificAttributes');
+    }
+  }
 }

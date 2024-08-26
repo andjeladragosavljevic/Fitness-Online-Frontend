@@ -1,27 +1,25 @@
-@if (isDataLoaded) {
-<button
-  mat-stroked-button
-  class="button"
-  color="primary"
-  extended
-  routerLink="/exercises"
->
-  Discover Workouts
-</button>
-<div>
-  <h2 class="title">Latest Fitness News</h2>
-  <mat-expansion-panel *ngFor="let item of feedItems">
-    <mat-expansion-panel-header>
-      <mat-panel-title class="exercise-title">
-        {{ item?.title || "No title available." }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <p>{{ item.description }}</p>
-    <a [href]="item.link">{{ item.link || "No link available." }}</a>
-  </mat-expansion-panel>
+<div class="home-container">
+  @if (isDataLoaded) {
+
+  <a mat-fab extended routerLink="/exercises">
+    <mat-icon>search</mat-icon>
+    Discover Workouts
+  </a>
+  <div>
+    <h2 class="title">Latest Fitness News</h2>
+    <mat-expansion-panel *ngFor="let item of feedItems">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="exercise-title">
+          {{ item?.title || "No title available." }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>{{ item.description }}</p>
+      <a [href]="item.link">{{ item.link || "No link available." }}</a>
+    </mat-expansion-panel>
+  </div>
+  } @else {
+  <div class="spinner-div">
+    <div class="spinner" *ngIf="!isDataLoaded"></div>
+  </div>
+  }
 </div>
-} @else {
-<div class="spinner-div">
-  <div class="spinner" *ngIf="!isDataLoaded"></div>
-</div>
-}

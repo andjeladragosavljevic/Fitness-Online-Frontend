@@ -3,17 +3,14 @@
   (filtersApplied)="onFiltersApplied($event)"
 ></app-filter>
 <div class="program-list-container">
+  @if(isDataLoaded){
   <h2 class="title">My Fitness Programs</h2>
-
-  <div class="spinner-div" *ngIf="isLoading">
-    <div class="spinner"></div>
-  </div>
 
   <div *ngIf="error" class="error-message">
     <p>{{ error }}</p>
   </div>
 
-  <div *ngIf="!isLoading && !error" class="program-list">
+  <div *ngIf="!error" class="program-list">
     <div *ngFor="let program of myPrograms" class="program-card">
       <img
         [src]="'http://localhost:8080' + program.images[0]"
@@ -42,10 +39,16 @@
       </div>
     </div>
   </div>
+  } @else {
+  <div class="spinner-div">
+    <div class="spinner"></div>
+  </div>
+  }
+
   <mat-paginator
-    [length]="totalElements"
+    [length]="length"
     [pageSize]="pageSize"
-    [pageIndex]="currentPage"
+    [pageIndex]="pageIndex"
     (page)="onPageChange($event)"
     [pageSizeOptions]="[5, 10, 25, 100]"
   ></mat-paginator>

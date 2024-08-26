@@ -1,6 +1,9 @@
 .button {
   border-radius: 15px !important;
 }
+a[_ngcontent-ng-c1830312265] {
+  font-size: 16px;
+}
 mat-expansion-panel {
   border-radius: 15px;
   margin-bottom: 5px;
@@ -46,4 +49,9 @@ mat-expansion-panel p {
 }
 a {
   font-size: 14px;
+}
+
+.home-container {
+  padding: 20px;
+  background-color: #f9f9f9;
 }

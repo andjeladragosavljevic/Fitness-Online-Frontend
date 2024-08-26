@@ -6,6 +6,7 @@ import { AppMaterialModule } from '../app-material/app-material.module';
 import { RouterModule } from '@angular/router';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterComponent } from '../filter/filter.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-program-list',
@@ -29,10 +30,12 @@ export class ProgramListComponent implements OnInit {
 
   filters!: FormGroup;
 
-  totalElements = 0;
-  currentPage = 0;
+  length = 0;
   pageSize = 10;
-  isLoading = true;
+  pageIndex = 0;
+  pageEvent!: PageEvent;
+
+  isDataLoaded = false;
   error: string | null = null;
 
   ownPrograms = false;
@@ -44,19 +47,18 @@ export class ProgramListComponent implements OnInit {
   }
 
   loadPrograms(): void {
-    this.isLoading = true;
     this.programService
-      .getPrograms(this.filters?.value, this.currentPage, this.pageSize)
+      .getPrograms(this.filters?.value, this.pageIndex, this.pageSize)
       .subscribe({
         next: (data) => {
           this.programs = data.content;
-          this.totalElements = data.totalElements;
-          this.isLoading = false;
+          this.length = data.totalElements;
+          this.isDataLoaded = true;
         },
         error: (err) => {
           this.error = 'Failed to load your programs. Please try again later.';
           console.error(err);
-          this.isLoading = false;
+          this.isDataLoaded = false;
         },
       });
   }
@@ -67,8 +69,10 @@ export class ProgramListComponent implements OnInit {
   }
 
   onPageChange(event: any): void {
-    this.currentPage = event.pageIndex;
+    this.pageEvent = event;
     this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+
     this.loadPrograms();
   }
 }

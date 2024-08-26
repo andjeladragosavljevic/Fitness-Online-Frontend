@@ -85,4 +85,14 @@ export class ProgramService {
     }
     return this.http.get<any>(`${this.baseUrl}/my-programs`, { params });
   }
+
+  participateInProgram(
+    userId: number,
+    programId: number,
+    paymentMethodId: number
+  ): Observable<any> {
+    const apiUrl = 'http://localhost:8080/api/participation';
+    const body = { userId, programId, paymentMethodId };
+    return this.http.post<any>(apiUrl, body);
+  }
 }

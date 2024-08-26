@@ -34,18 +34,6 @@
       <span class="attribute-value">{{ attribute.value }}</span>
     </div>
   </div>
-
-  <!-- <div>
-    <p class="instructor">
-      Instructor:
-      <span
-        >{{ program.instructor.firstName }}
-        {{ program.instructor.lastName }}</span
-      >
-    </p>
-    <p class="instructor">Contact: {{ program.instructor.email }}</p>
-  </div> -->
-
   <div class="actions">
     <button mat-stroked-button class="edit-button">
       <mat-icon>edit</mat-icon>
@@ -70,7 +58,3 @@
 <div *ngIf="error" class="error-message">
   <p>{{ error }}</p>
 </div>
-
-<!-- <div *ngIf="isUserParticipating">
-  <p>You are already participating in this program.</p>
-</div> -->

@@ -176,14 +176,23 @@
     <mat-error *ngIf="filterForm.hasError('priceInvalid')"
       >Min price cannot be greater than max price.</mat-error
     >
-
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      (click)="applyFilters()"
-    >
-      Apply Filters
-    </button>
+    <div class="actions">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="applyFilters()"
+      >
+        Apply Filters
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        (click)="clearFilters()"
+      >
+        Clear Filters
+      </button>
+    </div>
   </form>
 </mat-expansion-panel>

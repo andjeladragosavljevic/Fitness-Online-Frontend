@@ -48,7 +48,7 @@
     <p class="instructor">Contact: {{ program.instructor.email }}</p>
   </div>
   <div>
-    <button mat-button>Join Program</button>
+    <button mat-button (click)="openPaymentModal()">Join Program</button>
   </div>
 </div>
 <div class="footer-spacer"></div>
@@ -60,7 +60,3 @@
 <div *ngIf="error" class="error-message">
   <p>{{ error }}</p>
 </div>
-
-<!-- <div *ngIf="isUserParticipating">
-  <p>You are already participating in this program.</p>
-</div> -->

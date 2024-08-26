@@ -1,5 +1,5 @@
 <mat-toolbar class="app-toolbar">
-  <span class="app-logo">FitFlex</span>
+  <button mat-button class="app-logo" [routerLink]="['/']">FitFlex</button>
   <button mat-button [matMenuTriggerFor]="menu">
     <mat-icon>menu</mat-icon> Menu
   </button>
@@ -20,14 +20,13 @@
       <mat-icon>assignment</mat-icon>
       <span>My Programs</span>
     </button>
-    <button mat-menu-item [routerLink]="['/about']">
-      <mat-icon>info</mat-icon>
-      <span>About</span>
-    </button>
   </mat-menu>
 
   <span class="spacer"></span>
-  <button mat-button [routerLink]="['/login']">Login</button>
+  <button mat-icon-button [routerLink]="['/login']">
+    <mat-icon>login</mat-icon>
+  </button>
+  <!-- <button mat-button [routerLink]="['/login']">Login</button> -->
 </mat-toolbar>
 
 <router-outlet></router-outlet>

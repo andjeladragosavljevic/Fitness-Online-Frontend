@@ -52,11 +52,6 @@ export class ProgramDetailComponent {
   loadProgramDetails(id: number): void {
     this.programService.getProgramById(id).subscribe({
       next: (data) => {
-        console.log(
-          '🚀 ~ ProgramDetailComponent ~ this.programService.getProgramById ~ data:',
-          data
-        );
-
         this.program = data;
         this.sanitizedImages = data.images.map(
           (img) => `${this.baseUrl}${img}`
@@ -82,5 +77,19 @@ export class ProgramDetailComponent {
       default:
         return 'black';
     }
+  }
+
+  participateInProgram(): void {
+    const id = this.program?.id ?? 0;
+
+    //userId trenutno prijavljeni korisnik
+    this.programService.participateInProgram(41, id, 1).subscribe({
+      next: (response) => {
+        //this.snackBar.open('You have successfully participated in the program!', 'Close', { duration: 3000 });
+      },
+      error: (error) => {
+        //this.snackBar.open('Failed to participate in the program. Please try again later.', 'Close', { duration: 3000 });
+      },
+    });
   }
 }

@@ -1,3 +1,8 @@
+.exercise-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
 hr {
   border-top: 1px solid #ffc107;
 }
