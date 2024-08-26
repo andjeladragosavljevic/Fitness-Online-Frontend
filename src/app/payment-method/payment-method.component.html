@@ -1,1 +1,49 @@
-<p>payment-method works!</p>
+<div class="payment-container">
+  <h2 class="payment-title">Payment Information</h2>
+
+  <form [formGroup]="paymentForm" (ngSubmit)="submitPayment()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Payment Method</mat-label>
+      <mat-select formControlName="paymentMethod">
+        <mat-option *ngFor="let method of paymentMethods" [value]="method.id">
+          {{ method.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Cardholder Name</mat-label>
+      <input matInput placeholder="Enter your name as it appears on the card" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Card Number</mat-label>
+      <input
+        matInput
+        formControlName="cardNumber"
+        type="text"
+        placeholder="xxxx xxxx xxxx xxxx"
+        maxlength="16"
+      />
+    </mat-form-field>
+
+    <div class="exp-cvc-container">
+      <mat-form-field appearance="outline" class="exp-date">
+        <mat-label>Expiry Date</mat-label>
+        <input matInput placeholder="MM/YY" maxlength="5" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="cvc-code">
+        <mat-label>CVC</mat-label>
+        <input matInput type="text" placeholder="CVC" maxlength="3" />
+      </mat-form-field>
+    </div>
+
+    <div class="actions">
+      <button mat-raised-button color="primary" type="submit">
+        Confirm Payment
+      </button>
+      <button mat-button mat-dialog-close>Cancel</button>
+    </div>
+  </form>
+</div>

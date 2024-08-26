@@ -5,6 +5,8 @@ import { ProgramService } from '../services/program.service';
 import { CurrencyPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { PaymentMethodComponent } from '../payment-method/payment-method.component';
 
 @Component({
   selector: 'app-program-detail',
@@ -39,7 +41,8 @@ export class ProgramDetailComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private programService: ProgramService
+    private programService: ProgramService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -90,6 +93,32 @@ export class ProgramDetailComponent {
       error: (error) => {
         //this.snackBar.open('Failed to participate in the program. Please try again later.', 'Close', { duration: 3000 });
       },
+    });
+  }
+
+  openPaymentModal() {
+    let id = this.program?.id ?? 0;
+    const dialogRef = this.dialog.open(PaymentMethodComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.programService
+          .participateInProgram(31, id, result.paymentMethod)
+          .subscribe({
+            next: (response) => {
+              if (response.program.location === 'Online') {
+                window.open(response.program.youtubeLink, '_blank');
+              } else {
+                alert(
+                  'You have successfully joined the program. Visit the location on the scheduled date.'
+                );
+              }
+            },
+            error: (err) => {
+              alert('Failed to join the program. Please try again.');
+            },
+          });
+      }
     });
   }
 }
