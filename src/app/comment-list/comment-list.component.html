@@ -1,0 +1,39 @@
+<div class="comment-list-container">
+  <h2>Comments</h2>
+  <div *ngFor="let comment of comments">
+    <div class="comment-container">
+      <div class="comment-header">
+        <span class="username"
+          >{{ comment.user.firstName }} {{ comment.user.lastName }}</span
+        >
+        <!-- <span class="comment-date"> August 27, 2024</span> -->
+
+        <span class="comment-date">{{ comment.createdAt | date }}</span>
+      </div>
+      <div class="comment-body">
+        {{ comment.content }}
+      </div>
+      @if(comment.userId == 43){
+      <div class="comment-actions">
+        <button mat-button (click)="deleteComment(comment.id)">Delete</button>
+      </div>
+      }
+    </div>
+  </div>
+
+  <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
+    <textarea
+      matInput
+      style="width: 100%"
+      placeholder="Write a comment..."
+      cdkTextareaAutosize
+      cdkAutosizeMinRows="3"
+      cdkAutosizeMaxRows="10"
+      #content
+      required
+      formControlName="comment"
+    ></textarea
+    ><br />
+    <button mat-flat-button type="submit" color="primary">Comment</button>
+  </form>
+</div>

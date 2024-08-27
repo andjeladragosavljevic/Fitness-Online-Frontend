@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PaymentMethodComponent } from '../payment-method/payment-method.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { CommentListComponent } from '../comment-list/comment-list.component';
 
 @Component({
   selector: 'app-program-detail',
@@ -20,6 +21,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
     SlickCarouselModule,
     CurrencyPipe,
     NgStyle,
+    CommentListComponent,
   ],
   templateUrl: './program-detail.component.html',
   styleUrl: './program-detail.component.css',
