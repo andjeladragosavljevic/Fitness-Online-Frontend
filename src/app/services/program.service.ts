@@ -88,11 +88,11 @@ export class ProgramService {
 
   participateInProgram(
     userId: number,
-    programId: number,
+    fitnessprogramId: number,
     paymentMethodId: number
   ): Observable<any> {
     const apiUrl = 'http://localhost:8080/api/participation';
-    const body = { userId, programId, paymentMethodId };
+    const body = { userId, fitnessprogramId, paymentMethodId };
     return this.http.post<any>(apiUrl, body);
   }
 }

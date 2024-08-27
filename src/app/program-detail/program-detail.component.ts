@@ -5,8 +5,10 @@ import { ProgramService } from '../services/program.service';
 import { CurrencyPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { PaymentMethodComponent } from '../payment-method/payment-method.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 @Component({
   selector: 'app-program-detail',
@@ -42,7 +44,8 @@ export class ProgramDetailComponent {
   constructor(
     private route: ActivatedRoute,
     private programService: ProgramService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -82,20 +85,6 @@ export class ProgramDetailComponent {
     }
   }
 
-  participateInProgram(): void {
-    const id = this.program?.id ?? 0;
-
-    //userId trenutno prijavljeni korisnik
-    this.programService.participateInProgram(41, id, 1).subscribe({
-      next: (response) => {
-        //this.snackBar.open('You have successfully participated in the program!', 'Close', { duration: 3000 });
-      },
-      error: (error) => {
-        //this.snackBar.open('Failed to participate in the program. Please try again later.', 'Close', { duration: 3000 });
-      },
-    });
-  }
-
   openPaymentModal() {
     let id = this.program?.id ?? 0;
     const dialogRef = this.dialog.open(PaymentMethodComponent);
@@ -106,16 +95,27 @@ export class ProgramDetailComponent {
           .participateInProgram(31, id, result.paymentMethod)
           .subscribe({
             next: (response) => {
-              if (response.program.location === 'Online') {
-                window.open(response.program.youtubeLink, '_blank');
+              if (response.fitnessprogram.location === 'Online') {
+                this.snackBar.open(
+                  'You have successfully joined the program.',
+                  'Close',
+                  { duration: 3000 }
+                );
+                window.open(response.fitnessprogram.youtubeLink, '_blank');
               } else {
-                alert(
-                  'You have successfully joined the program. Visit the location on the scheduled date.'
+                this.snackBar.open(
+                  'You have successfully joined the program. Visit the location on the scheduled date.',
+                  'Close',
+                  { duration: 3000 }
                 );
               }
             },
             error: (err) => {
-              alert('Failed to join the program. Please try again.');
+              this.snackBar.open(
+                'Failed to participate in the program. Please try again later.',
+                'Close',
+                { duration: 3000 }
+              );
             },
           });
       }
