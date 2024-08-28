@@ -1,19 +1,19 @@
 <mat-card>
   <mat-card-title>New program</mat-card-title>
   <mat-card-content>
-    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-      <mat-form-field class="example-form-field" appearance="outline">
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()" #form="ngForm">
+      <mat-form-field appearance="outline">
         <mat-icon matPrefix>person</mat-icon>
         <mat-label>Instructor</mat-label>
         <input formControlName="userId" matInput type="text" />
       </mat-form-field>
 
-      <mat-form-field class="example-form-field" appearance="outline">
+      <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input formControlName="name" matInput type="text" />
       </mat-form-field>
 
-      <mat-form-field class="example-form-field" appearance="outline">
+      <mat-form-field appearance="outline">
         <mat-label>Description</mat-label>
         <textarea
           formControlName="description"
@@ -32,7 +32,20 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-
+      @if (addForm.get('specificAttributes')) {
+      <div formGroupName="specificAttributes">
+        <div *ngFor="let attr of specificAttributes">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ attr.name }}</mat-label>
+            <input
+              matInput
+              [formControlName]="attr.name"
+              name="{{ attr.name }}"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      }
       <mat-form-field appearance="outline">
         <mat-label>Difficulty level</mat-label>
         <mat-select formControlName="difficultyLevel">
@@ -62,25 +75,38 @@
           matInput
           [matDatepicker]="endDatePicker"
         />
+
         <mat-datepicker-toggle
           matPrefix
           [for]="endDatePicker"
         ></mat-datepicker-toggle>
         <mat-datepicker #endDatePicker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field class="example-form-field" appearance="outline">
+      @if(addForm.hasError('dateInvalid')){
+      <mat-error class="error">Start date cannot be after end date.</mat-error>
+      }
+
+      <mat-form-field appearance="outline">
         <mat-icon matPrefix>attach_money</mat-icon>
         <mat-label>Price</mat-label>
         <input formControlName="price" matInput type="number" />
       </mat-form-field>
 
-      <mat-form-field class="example-form-field" appearance="outline">
+      <mat-form-field appearance="outline">
         <mat-icon matPrefix>location_on</mat-icon>
         <mat-label>Location</mat-label>
         <input formControlName="location" matInput type="text" />
       </mat-form-field>
 
-      <mat-form-field class="example-form-field" appearance="outline">
+      @if(showLinkField){
+      <mat-form-field appearance="outline">
+        <mat-icon matPrefix>link</mat-icon>
+        <mat-label>Youtube Link</mat-label>
+        <input formControlName="youtubeLink" matInput type="text" />
+      </mat-form-field>
+      }
+
+      <mat-form-field appearance="outline">
         <mat-icon matPrefix>local_phone</mat-icon>
         <mat-label>Contact</mat-label>
         <input formControlName="contact" matInput type="text" />
@@ -96,15 +122,6 @@
             <img [src]="img" alt="{{ img }}" class="program-image" />
           </div>
         </ngx-slick-carousel>
-        <!-- <owl-carousel-o>
-          <ng-container *ngFor="let image of files">
-            <ng-template carouselSlide>
-              <div class="image-container">
-                <img [src]="image" alt="Program Image" />
-              </div>
-            </ng-template>
-          </ng-container>
-        </owl-carousel-o> -->
       </div>
 
       <ng-template #noImages>
@@ -127,7 +144,9 @@
         </div>
       </label>
 
-      <button color="primary" mat-raised-button>Add program</button>
+      <button class="add-button" color="primary" mat-raised-button>
+        Add program
+      </button>
     </form>
   </mat-card-content>
 </mat-card>

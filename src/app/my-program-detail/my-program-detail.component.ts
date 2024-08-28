@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Program, SpecificAttribute } from '../models/Program';
+import { Program } from '../models/Program';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgramService } from '../services/program.service';
 import { CurrencyPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { AppMaterialModule } from '../app-material/app-material.module';
+import { CommentListComponent } from '../comment-list/comment-list.component';
 
 @Component({
   selector: 'app-my-program-detail',
@@ -16,6 +17,7 @@ import { AppMaterialModule } from '../app-material/app-material.module';
     CurrencyPipe,
     NgStyle,
     AppMaterialModule,
+    CommentListComponent,
   ],
   templateUrl: './my-program-detail.component.html',
   styleUrl: './my-program-detail.component.css',
@@ -55,9 +57,9 @@ export class MyProgramDetailComponent implements OnInit {
       next: (data) => {
         this.program = data;
 
-        this.sanitizedImages = data.images.map(
-          (img) => `${this.baseUrl}${img}`
-        );
+        this.sanitizedImages = data.images.map((img) => {
+          return `${this.baseUrl}${img}`;
+        });
         this.isLoading = false;
       },
       error: (err) => {

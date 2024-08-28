@@ -61,9 +61,9 @@ export class ProgramDetailComponent {
     this.programService.getProgramById(id).subscribe({
       next: (data) => {
         this.program = data;
-        this.sanitizedImages = data.images.map(
-          (img) => `${this.baseUrl}${img}`
-        );
+        this.sanitizedImages = data.images.map((img) => {
+          return `${this.baseUrl}${img}`;
+        });
         this.isLoading = false;
       },
       error: (err) => {
@@ -97,7 +97,10 @@ export class ProgramDetailComponent {
           .participateInProgram(31, id, result.paymentMethod)
           .subscribe({
             next: (response) => {
-              if (response.fitnessprogram.location === 'Online') {
+              if (
+                (response.fitnessprogram.location as string).toLowerCase() ===
+                'online'
+              ) {
                 this.snackBar.open(
                   'You have successfully joined the program.',
                   'Close',

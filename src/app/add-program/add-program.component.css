@@ -26,10 +26,6 @@ form {
   justify-content: space-evenly;
 }
 
-button {
-  width: 100%;
-}
-
 p {
   margin: 0 auto;
   text-align: center;
@@ -42,24 +38,20 @@ p {
   margin: 0 auto;
   margin-bottom: 10px;
 }
-hr {
-  border-top: 1px solid #ffc107;
-}
 
 .image-container {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 100%;
   z-index: 1;
   background-color: #fff;
   background-position: center;
   background-size: cover;
   border: 1px dotted gray;
-  /* box-shadow: 0 5px 10px 10px #e9e8fa; */
 }
+
 .image-container mat-icon {
   display: flex;
   justify-content: center;
@@ -68,32 +60,13 @@ hr {
 }
 
 .icon-wrapper {
-  /* position: absolute; */
   display: flex;
   justify-content: center;
   align-items: center;
   height: 20px;
-
   padding: 0.35rem;
-  /* background-color: #605dc9; */
-
-  /* right: 0;
-  top: 75%; */
   z-index: 2;
   cursor: pointer;
-
-  p {
-    color: gray;
-    font-size: 18px;
-  }
-
-  label {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   input[type="file"] {
     display: none;
   }
@@ -102,13 +75,6 @@ hr {
 mat-icon {
   color: gray;
 }
-button {
-  font-size: 18px;
-}
-/* mat-form-field {
-  flex-grow: 1;
-  height: 100%; 
-}*/
 
 .field-container {
   width: 100%;
@@ -129,4 +95,17 @@ button {
   max-height: 150px;
   object-fit: cover;
   border-radius: 10px;
+}
+
+.error {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.add-button {
+  font-size: 18px;
 }

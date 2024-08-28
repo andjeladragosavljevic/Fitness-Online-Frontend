@@ -1,10 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import {
+  AbstractControlOptions,
+  FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
+  NgForm,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -16,6 +19,9 @@ import { HttpClient } from '@angular/common/http';
 import { Program } from '../models/Program';
 
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { Attribute } from '../models/Attribute';
+import { AttributeService } from '../services/attribute.service';
+import { DifficultyLevel } from '../models/DifficultyLevel';
 
 @Component({
   selector: 'app-add-program',
@@ -35,16 +41,18 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
   providers: [CategoryService, ProgramService],
 })
 export class AddProgramComponent implements OnInit {
+  @ViewChild('form') form!: NgForm;
   addForm!: FormGroup;
-  difficultyLevels = ['Beginner', 'Intermediate', 'Advanced'];
+  difficultyLevels = Object.values(DifficultyLevel);
   readonly baseUrl = 'http://localhost:8080/api/images';
 
-  route: ActivatedRoute = inject(ActivatedRoute);
   programService = inject(ProgramService);
   program: Program | undefined;
   programId = -1;
   categoryService = inject(CategoryService);
   categories: Category[] = [];
+  specificAttributes: Attribute[] = [];
+  showLinkField: boolean = false;
 
   slideConfig = {
     slidesToShow: 2,
@@ -55,19 +63,85 @@ export class AddProgramComponent implements OnInit {
     autoplaySpeed: 2000,
   };
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private attributeService: AttributeService
+  ) {
     this.programId = Number(this.route.snapshot.params['id']);
-    // this.program = this.programService.geProgramById(this.programId);
+
+    this.addForm = this.fb.group(
+      {
+        name: ['', Validators.required],
+        description: [''],
+        categoryId: ['', Validators.required],
+        difficultyLevel: ['', Validators.required],
+        price: ['', Validators.required],
+        location: ['', Validators.required],
+        contact: ['', Validators.required],
+        images: [''],
+        userId: ['', Validators.required],
+        startDate: ['', Validators.required],
+        endDate: ['', Validators.required],
+        youtubeLink: [''],
+      },
+      {
+        validators: this.dateValidator.bind(this),
+      } as AbstractControlOptions
+    );
   }
+
   ngOnInit(): void {
-    this.categoryService.getCategories().subscribe((data) => {
-      this.categories = data;
+    this.loadCategories();
+    this.onCategoryChange();
+    this.onLocationChange();
+  }
+
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (err) => {
+        console.error(err);
+      },
     });
-    this.createForm();
   }
 
   files: string[] = [];
   imageUrls: string[] = [];
+
+  onCategoryChange() {
+    this.addForm.get('categoryId')?.valueChanges.subscribe((category) => {
+      const specificAttributesGroup = new FormGroup({});
+
+      this.attributeService
+        .getAttributesForCategory(category)
+        .subscribe((attributes) => {
+          this.specificAttributes = attributes;
+
+          attributes.forEach((attr) => {
+            specificAttributesGroup.addControl(attr.name, new FormControl(''));
+          });
+
+          if (this.addForm.contains('specificAttributes')) {
+            this.addForm.removeControl('specificAttributes');
+          }
+
+          this.addForm.addControl(
+            'specificAttributes',
+            specificAttributesGroup
+          );
+        });
+    });
+  }
+
+  onLocationChange() {
+    this.addForm.get('location')?.valueChanges.subscribe((location) => {
+      this.showLinkField = (location as string).toLowerCase() === 'online';
+    });
+  }
 
   onFileChange(event: any) {
     const files = event.target.files as FileList;
@@ -90,6 +164,7 @@ export class AddProgramComponent implements OnInit {
       }
     }
   }
+
   resetInput() {
     const input = document.getElementById(
       'avatar-input-file'
@@ -101,19 +176,23 @@ export class AddProgramComponent implements OnInit {
 
   onSubmit(): void {
     if (this.addForm.valid) {
+      const specificAttributesArray = Object.keys(
+        this.addForm.value.specificAttributes
+      ).map((key) => ({
+        name: key,
+        value: this.addForm.value.specificAttributes[key],
+      }));
+
       const programData: Program = {
         ...this.addForm.value,
-        categoryId: Number(this.addForm.value.categoryId),
-        price: Number(this.addForm.value.price),
-        duration: Number(this.addForm.value.duration),
         images: this.imageUrls,
+        specificAttributes: specificAttributesArray,
       } as Program;
 
       this.programService.createProgram(programData).subscribe(
-        (response) => {
-          this.addForm.reset();
+        () => {
+          this.form.resetForm();
           this.resetInput();
-          this.createForm();
         },
         (error) => {
           console.error(error);
@@ -122,21 +201,14 @@ export class AddProgramComponent implements OnInit {
     }
   }
 
-  createForm() {
-    return (this.addForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      description: new FormControl(''),
-      categoryId: new FormControl('', Validators.required),
-      difficultyLevel: new FormControl('', Validators.required),
+  dateValidator(group: FormGroup): { [key: string]: boolean } | null {
+    const startDate = group.get('startDate')?.value;
+    const endDate = group.get('endDate')?.value;
 
-      price: new FormControl('', Validators.required),
-      location: new FormControl('', Validators.required),
-      contact: new FormControl('', Validators.required),
-      images: new FormControl(''),
-      userId: new FormControl(30, Validators.required),
-      startDate: new FormControl(),
-      endDate: new FormControl(),
-      //1
-    }));
+    if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      return { dateInvalid: true };
+    }
+
+    return null;
   }
 }
