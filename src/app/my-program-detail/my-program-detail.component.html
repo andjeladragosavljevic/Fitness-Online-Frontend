@@ -35,7 +35,11 @@
     </div>
   </div>
   <div class="actions">
-    <button mat-stroked-button class="edit-button">
+    <button
+      (click)="editProgram(program)"
+      mat-stroked-button
+      class="edit-button"
+    >
       <mat-icon>edit</mat-icon>
       Edit
     </button>

@@ -70,6 +70,10 @@ export class MyProgramDetailComponent implements OnInit {
     });
   }
 
+  editProgram(program: Program): void {
+    this.router.navigate(['/new-program'], { state: { program } });
+  }
+
   getColor(difficulty: string | undefined): string {
     switch (difficulty) {
       case 'Beginner':

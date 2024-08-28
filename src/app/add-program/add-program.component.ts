@@ -11,7 +11,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { ProgramService } from '../services/program.service';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../models/Category';
@@ -53,6 +53,7 @@ export class AddProgramComponent implements OnInit {
   categories: Category[] = [];
   specificAttributes: Attribute[] = [];
   showLinkField: boolean = false;
+  isEditMode: boolean = false;
 
   slideConfig = {
     slidesToShow: 2,
@@ -67,7 +68,8 @@ export class AddProgramComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private http: HttpClient,
-    private attributeService: AttributeService
+    private attributeService: AttributeService,
+    private router: Router
   ) {
     this.programId = Number(this.route.snapshot.params['id']);
 
@@ -93,6 +95,19 @@ export class AddProgramComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const navigation = this.router.getCurrentNavigation();
+    console.log(
+      '🚀 ~ AddProgramComponent ~ ngOnInit ~ navigation:',
+      navigation
+    );
+    const state = navigation?.extras.state as { program: Program };
+    console.log('🚀 ~ AddProgramComponent ~ ngOnInit ~ state:', state);
+
+    if (state && state.program) {
+      this.addForm.patchValue(state.program);
+      this.imageUrls = state.program.images;
+      this.isEditMode = true;
+    }
     this.loadCategories();
     this.onCategoryChange();
     this.onLocationChange();
