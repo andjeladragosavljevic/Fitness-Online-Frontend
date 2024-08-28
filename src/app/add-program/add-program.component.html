@@ -1,0 +1,133 @@
+<mat-card>
+  <mat-card-title>New program</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-label>Instructor</mat-label>
+        <input formControlName="userId" matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-label>Name</mat-label>
+        <input formControlName="name" matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea
+          formControlName="description"
+          matInput
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="5"
+          cdkAutosizeMaxRows="10"
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Difficulty level</mat-label>
+        <mat-select formControlName="difficultyLevel">
+          <mat-option *ngFor="let level of difficultyLevels" [value]="level">
+            {{ level }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Start Date</mat-label>
+        <input
+          formControlName="startDate"
+          matInput
+          [matDatepicker]="startDatePicker"
+        />
+        <mat-datepicker-toggle
+          matPrefix
+          [for]="startDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>End Date</mat-label>
+        <input
+          formControlName="endDate"
+          matInput
+          [matDatepicker]="endDatePicker"
+        />
+        <mat-datepicker-toggle
+          matPrefix
+          [for]="endDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-icon matPrefix>attach_money</mat-icon>
+        <mat-label>Price</mat-label>
+        <input formControlName="price" matInput type="number" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-icon matPrefix>location_on</mat-icon>
+        <mat-label>Location</mat-label>
+        <input formControlName="location" matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-icon matPrefix>local_phone</mat-icon>
+        <mat-label>Contact</mat-label>
+        <input formControlName="contact" matInput type="text" />
+      </mat-form-field>
+
+      <div class="avatar-container" *ngIf="files.length > 0; else noImages">
+        <ngx-slick-carousel
+          class="program-slider"
+          #slickModal="slick-carousel"
+          [config]="slideConfig"
+        >
+          <div ngxSlickItem *ngFor="let img of files" class="slide">
+            <img [src]="img" alt="{{ img }}" class="program-image" />
+          </div>
+        </ngx-slick-carousel>
+        <!-- <owl-carousel-o>
+          <ng-container *ngFor="let image of files">
+            <ng-template carouselSlide>
+              <div class="image-container">
+                <img [src]="image" alt="Program Image" />
+              </div>
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o> -->
+      </div>
+
+      <ng-template #noImages>
+        <div class="image-container">
+          <mat-icon>image</mat-icon>
+        </div>
+      </ng-template>
+
+      <label for="avatar-input-file">
+        <div class="icon-wrapper">
+          <input
+            formControlName="images"
+            type="file"
+            id="avatar-input-file"
+            accept="image/*"
+            multiple
+            (change)="onFileChange($event)"
+          />
+          <p>Add images</p>
+        </div>
+      </label>
+
+      <button color="primary" mat-raised-button>Add program</button>
+    </form>
+  </mat-card-content>
+</mat-card>

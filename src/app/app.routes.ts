@@ -5,6 +5,7 @@ import { ProgramListComponent } from './program-list/program-list.component';
 import { MyProgramsComponent } from './my-programs/my-programs.component';
 import { ProgramDetailComponent } from './program-detail/program-detail.component';
 import { MyProgramDetailComponent } from './my-program-detail/my-program-detail.component';
+import { AddProgramComponent } from './add-program/add-program.component';
 
 export const routes: Routes = [
   {
@@ -36,5 +37,10 @@ export const routes: Routes = [
     path: 'my-programs/:id',
     component: MyProgramDetailComponent,
     title: 'My Program Detail',
+  },
+  {
+    path: 'new-program',
+    component: AddProgramComponent,
+    title: 'New Program',
   },
 ];

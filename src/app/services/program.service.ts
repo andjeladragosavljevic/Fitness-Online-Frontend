@@ -31,15 +31,11 @@ export class ProgramService {
       tap(() => {
         this.snackBar.open('Program created successfully!', 'Close', {
           duration: 3000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
         });
       }),
       catchError((error) => {
         this.snackBar.open('Failed to create program!', 'Close', {
           duration: 3000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
         });
 
         return throwError(() => error);
