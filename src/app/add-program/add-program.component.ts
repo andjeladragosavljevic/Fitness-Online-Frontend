@@ -97,8 +97,6 @@ export class AddProgramComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const navigation = this.router.getCurrentNavigation();
-    console.log(
     if (
       this.navigation &&
       this.navigation.extras &&
