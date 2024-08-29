@@ -71,7 +71,7 @@ export class MyProgramDetailComponent implements OnInit {
   }
 
   editProgram(program: Program): void {
-    this.router.navigate(['/new-program'], { state: { program } });
+    this.router.navigate(['/edit-program'], { state: { program } });
   }
 
   getColor(difficulty: string | undefined): string {

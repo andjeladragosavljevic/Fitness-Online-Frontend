@@ -39,8 +39,13 @@ export const routes: Routes = [
     title: 'My Program Detail',
   },
   {
-    path: 'new-program',
+    path: 'add-program',
     component: AddProgramComponent,
     title: 'New Program',
+  },
+  {
+    path: 'edit-program',
+    component: AddProgramComponent,
+    title: 'Edit Program',
   },
 ];

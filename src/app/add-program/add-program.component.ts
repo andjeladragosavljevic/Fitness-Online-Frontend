@@ -11,7 +11,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Navigation, Route, Router } from '@angular/router';
 import { ProgramService } from '../services/program.service';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../models/Category';
@@ -44,7 +44,7 @@ export class AddProgramComponent implements OnInit {
   @ViewChild('form') form!: NgForm;
   addForm!: FormGroup;
   difficultyLevels = Object.values(DifficultyLevel);
-  readonly baseUrl = 'http://localhost:8080/api/images';
+  readonly baseUrl = 'http://localhost:8080';
 
   programService = inject(ProgramService);
   program: Program | undefined;
@@ -55,6 +55,7 @@ export class AddProgramComponent implements OnInit {
   showLinkField: boolean = false;
   isEditMode: boolean = false;
 
+  navigation: Navigation | null = null;
   slideConfig = {
     slidesToShow: 2,
     slidesToScroll: 1,
@@ -71,6 +72,7 @@ export class AddProgramComponent implements OnInit {
     private attributeService: AttributeService,
     private router: Router
   ) {
+    this.navigation = this.router.getCurrentNavigation();
     this.programId = Number(this.route.snapshot.params['id']);
 
     this.addForm = this.fb.group(
@@ -97,17 +99,33 @@ export class AddProgramComponent implements OnInit {
   ngOnInit(): void {
     const navigation = this.router.getCurrentNavigation();
     console.log(
-      '🚀 ~ AddProgramComponent ~ ngOnInit ~ navigation:',
-      navigation
-    );
-    const state = navigation?.extras.state as { program: Program };
-    console.log('🚀 ~ AddProgramComponent ~ ngOnInit ~ state:', state);
+    if (
+      this.navigation &&
+      this.navigation.extras &&
+      this.navigation.extras.state
+    ) {
+      const program = this.navigation.extras.state['program'] as Program;
 
-    if (state && state.program) {
-      this.addForm.patchValue(state.program);
-      this.imageUrls = state.program.images;
-      this.isEditMode = true;
+      console.log('🚀 ~ AddProgramComponent ~ ngOnInit ~ program:', program);
+      if (program) {
+        const programData: Program = {
+          ...program,
+          images: this.imageUrls,
+          categoryId: program.category.id,
+
+          // specificAttributes: specificAttributesArray,
+        } as Program;
+        this.files = program.images.map((img) => {
+          return `${this.baseUrl}${img}`;
+        });
+
+        console.log('Program data:', program.name);
+        this.addForm.patchValue(programData);
+        this.imageUrls = program.images;
+        this.isEditMode = true;
+      }
     }
+
     this.loadCategories();
     this.onCategoryChange();
     this.onLocationChange();
@@ -167,7 +185,7 @@ export class AddProgramComponent implements OnInit {
         formData.append('file', files[i]);
 
         this.http
-          .post(`${this.baseUrl}/upload`, formData)
+          .post(`${this.baseUrl}/api/images/upload`, formData)
           .subscribe((response: any) => {
             const reader = new FileReader();
             reader.onload = (e: any) => {
@@ -190,29 +208,53 @@ export class AddProgramComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log(
+      '🚀 ~ AddProgramComponent ~ onSubmit ~ (this.addForm:',
+      this.addForm
+    );
+
     if (this.addForm.valid) {
-      const specificAttributesArray = Object.keys(
-        this.addForm.value.specificAttributes
-      ).map((key) => ({
-        name: key,
-        value: this.addForm.value.specificAttributes[key],
-      }));
+      const specificAttributesArray = this.addForm.value.specificAttributes
+        ? Object.keys(this.addForm.value.specificAttributes).map((key) => ({
+            name: key,
+            value: this.addForm.value.specificAttributes[key],
+          }))
+        : [];
 
       const programData: Program = {
         ...this.addForm.value,
         images: this.imageUrls,
         specificAttributes: specificAttributesArray,
       } as Program;
-
-      this.programService.createProgram(programData).subscribe(
-        () => {
-          this.form.resetForm();
-          this.resetInput();
-        },
-        (error) => {
-          console.error(error);
-        }
+      console.log(
+        '🚀 ~ AddProgramComponent ~ onSubmit ~ programData:',
+        programData
       );
+      if (this.isEditMode && programData.id) {
+        // Update existing program
+        this.programService.updateProgram(programData).subscribe(
+          () => {
+            this.form.resetForm();
+            this.resetInput();
+            this.router.navigate(['/programs']); // Redirect after update
+          },
+          (error: any) => {
+            console.error(error);
+          }
+        );
+      } else {
+        // Create new program
+        this.programService.createProgram(programData).subscribe(
+          () => {
+            this.form.resetForm();
+            this.resetInput();
+            this.router.navigate(['/programs']); // Redirect after creation
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
+      }
     }
   }
 

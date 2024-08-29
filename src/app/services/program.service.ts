@@ -91,4 +91,9 @@ export class ProgramService {
     const body = { userId, fitnessprogramId, paymentMethodId };
     return this.http.post<any>(apiUrl, body);
   }
+
+  updateProgram(program: Program): Observable<Program> {
+    const url = `${this.baseUrl}/${program.id}`;
+    return this.http.put<Program>(url, program);
+  }
 }

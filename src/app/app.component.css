@@ -10,7 +10,7 @@ body {
 
 .app-logo {
   font-weight: bold;
-  color: #ffffff;
+  font-size: 32px !important;
 }
 
 .app-logo.mat-mdc-button {

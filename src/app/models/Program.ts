@@ -5,6 +5,7 @@ export interface Program {
   name: string;
   description: string;
   category: Category;
+  categoryId: number;
   price: number;
   difficultyLevel: string;
   startDate: string;
@@ -14,6 +15,7 @@ export interface Program {
   instructor: Instructor;
   contact: string;
   specificAttributes: SpecificAttribute[];
+  youtubeLink: string;
 }
 
 export interface SpecificAttribute {
