@@ -55,6 +55,8 @@ export class AddProgramComponent implements OnInit {
   showLinkField: boolean = false;
   isEditMode: boolean = false;
 
+  removedImages: string[] = [];
+
   navigation: Navigation | null = null;
   slideConfig = {
     slidesToShow: 2,
@@ -77,6 +79,7 @@ export class AddProgramComponent implements OnInit {
 
     this.addForm = this.fb.group(
       {
+        id: [null],
         name: ['', Validators.required],
         description: [''],
         categoryId: ['', Validators.required],
@@ -110,6 +113,7 @@ export class AddProgramComponent implements OnInit {
           ...program,
           images: this.imageUrls,
           categoryId: program.category.id,
+          contact: program.instructor.email,
 
           // specificAttributes: specificAttributesArray,
         } as Program;
@@ -170,7 +174,7 @@ export class AddProgramComponent implements OnInit {
 
   onLocationChange() {
     this.addForm.get('location')?.valueChanges.subscribe((location) => {
-      this.showLinkField = (location as string).toLowerCase() === 'online';
+      this.showLinkField = (location as string)?.toLowerCase() === 'online';
     });
   }
 
@@ -204,6 +208,16 @@ export class AddProgramComponent implements OnInit {
       input.value = '';
     }
   }
+  removeImage(index: number): void {
+    this.files.splice(index, 1);
+    this.imageUrls.splice(index, 1);
+    const removedImage = this.imageUrls[index];
+    console.log(
+      '🚀 ~ AddProgramComponent ~ removeImage ~ imageUrls:',
+      this.imageUrls
+    );
+    this.removedImages.push(removedImage);
+  }
 
   onSubmit(): void {
     console.log(
@@ -223,11 +237,9 @@ export class AddProgramComponent implements OnInit {
         ...this.addForm.value,
         images: this.imageUrls,
         specificAttributes: specificAttributesArray,
+        removedImages: this.removedImages,
       } as Program;
-      console.log(
-        '🚀 ~ AddProgramComponent ~ onSubmit ~ programData:',
-        programData
-      );
+
       if (this.isEditMode && programData.id) {
         // Update existing program
         this.programService.updateProgram(programData).subscribe(

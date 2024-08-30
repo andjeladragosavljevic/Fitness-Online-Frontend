@@ -16,6 +16,7 @@ export interface Program {
   contact: string;
   specificAttributes: SpecificAttribute[];
   youtubeLink: string;
+  removedImages: [];
 }
 
 export interface SpecificAttribute {

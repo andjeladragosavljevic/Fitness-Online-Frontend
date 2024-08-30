@@ -118,8 +118,15 @@
           #slickModal="slick-carousel"
           [config]="slideConfig"
         >
-          <div ngxSlickItem *ngFor="let img of files" class="slide">
+          <div
+            ngxSlickItem
+            *ngFor="let img of files; let i = index"
+            class="slide"
+          >
             <img [src]="img" alt="{{ img }}" class="program-image" />
+            <button mat-icon-button type="button" (click)="removeImage(i)">
+              <mat-icon>close</mat-icon>
+            </button>
           </div>
         </ngx-slick-carousel>
       </div>

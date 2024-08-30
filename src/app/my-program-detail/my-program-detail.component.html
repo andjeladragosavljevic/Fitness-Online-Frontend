@@ -34,6 +34,11 @@
       <span class="attribute-value">{{ attribute.value }}</span>
     </div>
   </div>
+
+  <div>
+    <p class="instructor">Contact: {{ program.instructor.email }}</p>
+  </div>
+
   <div class="actions">
     <button
       (click)="editProgram(program)"
