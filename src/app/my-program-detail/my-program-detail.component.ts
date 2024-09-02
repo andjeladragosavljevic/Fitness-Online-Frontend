@@ -6,6 +6,8 @@ import { CurrencyPipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { CommentListComponent } from '../comment-list/comment-list.component';
+import moment, { Moment } from 'moment';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @Component({
   selector: 'app-my-program-detail',
@@ -18,6 +20,7 @@ import { CommentListComponent } from '../comment-list/comment-list.component';
     NgStyle,
     AppMaterialModule,
     CommentListComponent,
+    MatMomentDateModule,
   ],
   templateUrl: './my-program-detail.component.html',
   styleUrl: './my-program-detail.component.css',
@@ -29,6 +32,8 @@ export class MyProgramDetailComponent implements OnInit {
 
   baseUrl = 'http://localhost:8080';
   sanitizedImages: string[] = [];
+  formatedStartDate: string = '';
+  formatedEndDate: string = '';
 
   slideConfig = {
     slidesToShow: 2,
@@ -56,6 +61,9 @@ export class MyProgramDetailComponent implements OnInit {
     this.programService.getProgramById(id).subscribe({
       next: (data) => {
         this.program = data;
+
+        this.formatedStartDate = moment(data.startDate).format('DD MMM YYYY');
+        this.formatedEndDate = moment(data.endDate).format('DD MMM YYYY');
 
         this.sanitizedImages = data.images.map((img) => {
           return `${this.baseUrl}${img}`;

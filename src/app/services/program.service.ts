@@ -87,7 +87,7 @@ export class ProgramService {
     fitnessprogramId: number,
     paymentMethodId: number
   ): Observable<any> {
-    const apiUrl = 'http://localhost:8080/api/participation';
+    const apiUrl = 'http://localhost:8080/api/participations';
     const body = { userId, fitnessprogramId, paymentMethodId };
     return this.http.post<any>(apiUrl, body);
   }

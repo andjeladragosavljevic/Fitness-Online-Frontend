@@ -14,7 +14,7 @@ import { AttributeService } from '../services/attribute.service';
 import { Attribute } from '../models/Attribute';
 import { DifficultyLevel } from '../models/DifficultyLevel';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import 'moment/locale/fr';
+
 import moment from 'moment';
 import { ProgramStatus } from '../models/ProgramStatus';
 

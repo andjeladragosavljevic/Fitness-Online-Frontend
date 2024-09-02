@@ -1,0 +1,20 @@
+<div *ngIf="error" class="error-message">
+  {{ error }}
+</div>
+
+<div class="participation-list-container">
+  <div *ngIf="!error && participations.length > 0">
+    <div
+      *ngFor="let participation of participations"
+      class="participation-card"
+    >
+      <h3>{{ participation.fitnessprogram.name }}</h3>
+      <p>Date: {{ participation.participationTime | date : "shortDate" }}</p>
+      <p>Payment Method: {{ participation.paymentMethod.name }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="!error && participations.length === 0">
+    <p>No previous participations found.</p>
+  </div>
+</div>

@@ -18,7 +18,7 @@
   </p>
   <p class="duration">
     Duration:
-    {{ program.startDate }} - {{ program.endDate }}
+    {{ this.formatedStartDate }} - {{ this.formatedEndDate }}
   </p>
   <p class="price">{{ program.price | currency : "USD" : "symbol" }}</p>
   <p class="location">{{ program.location }}</p>

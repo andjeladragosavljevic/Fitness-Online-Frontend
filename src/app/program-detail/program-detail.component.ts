@@ -8,8 +8,8 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { MatDialog } from '@angular/material/dialog';
 import { PaymentMethodComponent } from '../payment-method/payment-method.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { CommentListComponent } from '../comment-list/comment-list.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-program-detail',
@@ -33,6 +33,8 @@ export class ProgramDetailComponent {
 
   baseUrl = 'http://localhost:8080';
   sanitizedImages: string[] = [];
+  formatedStartDate: string = '';
+  formatedEndDate: string = '';
 
   slideConfig = {
     slidesToShow: 2,
@@ -61,6 +63,10 @@ export class ProgramDetailComponent {
     this.programService.getProgramById(id).subscribe({
       next: (data) => {
         this.program = data;
+
+        this.formatedStartDate = moment(data.startDate).format('DD MMM YYYY');
+        this.formatedEndDate = moment(data.endDate).format('DD MMM YYYY');
+
         this.sanitizedImages = data.images.map((img) => {
           return `${this.baseUrl}${img}`;
         });
@@ -94,7 +100,7 @@ export class ProgramDetailComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.programService
-          .participateInProgram(31, id, result.paymentMethod)
+          .participateInProgram(41, id, result.paymentMethod)
           .subscribe({
             next: (response) => {
               if (

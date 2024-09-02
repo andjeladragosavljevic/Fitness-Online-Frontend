@@ -108,6 +108,7 @@ export class AddProgramComponent implements OnInit {
       const program = this.navigation.extras.state['program'] as Program;
 
       if (program) {
+        this.isEditMode = true;
         const programData: Program = {
           ...program,
           images: this.imageUrls,
@@ -122,7 +123,6 @@ export class AddProgramComponent implements OnInit {
 
         this.addForm.patchValue(programData);
         this.imageUrls = program.images;
-        this.isEditMode = true;
       }
     }
 
@@ -206,6 +206,7 @@ export class AddProgramComponent implements OnInit {
       input.value = '';
     }
   }
+
   removeImage(index: number): void {
     this.files.splice(index, 1);
     const removedImage = this.imageUrls[index];
@@ -231,24 +232,24 @@ export class AddProgramComponent implements OnInit {
       } as Program;
 
       if (this.isEditMode && programData.id) {
-        // Update existing program
         this.programService.updateProgram(programData).subscribe(
           () => {
             this.form.resetForm();
             this.resetInput();
-            this.router.navigate(['/programs']); // Redirect after update
+            this.files = [];
+            this.imageUrls = [];
+            // this.router.navigate(['/my-programs']); // Redirect after update
           },
           (error: any) => {
             console.error(error);
           }
         );
       } else {
-        // Create new program
         this.programService.createProgram(programData).subscribe(
           () => {
             this.form.resetForm();
             this.resetInput();
-            this.router.navigate(['/programs']); // Redirect after creation
+            //  this.router.navigate(['/my-programs']); // Redirect after creation
           },
           (error) => {
             console.error(error);

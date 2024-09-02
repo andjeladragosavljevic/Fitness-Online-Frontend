@@ -1,5 +1,10 @@
 <mat-card>
-  <mat-card-title>New program</mat-card-title>
+  <mat-card-title>
+    <ng-container *ngIf="isEditMode; else newProgram">
+      Edit program
+    </ng-container>
+    <ng-template #newProgram> New program </ng-template>
+  </mat-card-title>
   <mat-card-content>
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()" #form="ngForm">
       <mat-form-field appearance="outline">
@@ -152,7 +157,8 @@
       </label>
 
       <button class="add-button" color="primary" mat-raised-button>
-        Add program
+        <ng-container *ngIf="isEditMode; else addProgram"> Save </ng-container>
+        <ng-template #addProgram>Add program</ng-template>
       </button>
     </form>
   </mat-card-content>
