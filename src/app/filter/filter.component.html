@@ -39,8 +39,8 @@
 
     <!-- Second Row: User, Difficulty, Category -->
     <div class="row">
-      <div class="col-md-4">
-        @if(!this.isOwnPrograms){
+      @if(!this.isOwnPrograms){
+      <div class="col-md-3">
         <mat-form-field appearance="outline" class="custom-width">
           <mat-label>Instructor</mat-label>
           <input
@@ -50,7 +50,14 @@
             name="instructor"
           />
         </mat-form-field>
-        } @else{
+      </div>
+      }
+      <div
+        [ngClass]="{
+          'col-md-3': !isOwnPrograms,
+          'col-md-4': isOwnPrograms
+        }"
+      >
         <mat-form-field appearance="outline" class="custom-width">
           <mat-label>Program status</mat-label>
           <mat-select formControlName="status">
@@ -59,10 +66,13 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-
-        }
       </div>
-      <div class="col-md-4">
+      <div
+        [ngClass]="{
+          'col-md-3': !isOwnPrograms,
+          'col-md-4': isOwnPrograms
+        }"
+      >
         <mat-form-field appearance="outline" class="custom-width">
           <mat-icon matPrefix>stars</mat-icon>
           <mat-label>Difficulty Level</mat-label>
@@ -73,7 +83,12 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="col-md-4">
+      <div
+        [ngClass]="{
+          'col-md-3': !isOwnPrograms,
+          'col-md-4': isOwnPrograms
+        }"
+      >
         <mat-form-field appearance="outline" class="custom-width">
           <mat-label>Category</mat-label>
           <mat-select name="category" formControlName="category">

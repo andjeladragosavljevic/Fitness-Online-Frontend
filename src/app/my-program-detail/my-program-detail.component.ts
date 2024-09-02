@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Program } from '../models/Program';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgramService } from '../services/program.service';
-import { CurrencyPipe, NgFor, NgIf, NgStyle } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { CommentListComponent } from '../comment-list/comment-list.component';
@@ -21,19 +21,18 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     AppMaterialModule,
     CommentListComponent,
     MatMomentDateModule,
+    DatePipe,
   ],
   templateUrl: './my-program-detail.component.html',
   styleUrl: './my-program-detail.component.css',
 })
 export class MyProgramDetailComponent implements OnInit {
   program: Program | undefined;
-  isLoading = true;
+  isDataLoaded = true;
   error: string | null = null;
 
   baseUrl = 'http://localhost:8080';
   sanitizedImages: string[] = [];
-  formatedStartDate: string = '';
-  formatedEndDate: string = '';
 
   slideConfig = {
     slidesToShow: 2,
@@ -62,18 +61,15 @@ export class MyProgramDetailComponent implements OnInit {
       next: (data) => {
         this.program = data;
 
-        this.formatedStartDate = moment(data.startDate).format('DD MMM YYYY');
-        this.formatedEndDate = moment(data.endDate).format('DD MMM YYYY');
-
         this.sanitizedImages = data.images.map((img) => {
           return `${this.baseUrl}${img}`;
         });
-        this.isLoading = false;
+        this.isDataLoaded = true;
       },
       error: (err) => {
         this.error = 'Failed to load program details.';
         console.log(err);
-        this.isLoading = false;
+        this.isDataLoaded = false;
       },
     });
   }

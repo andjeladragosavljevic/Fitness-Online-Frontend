@@ -82,16 +82,6 @@ export class ProgramService {
     return this.http.get<any>(`${this.baseUrl}/my-programs`, { params });
   }
 
-  participateInProgram(
-    userId: number,
-    fitnessprogramId: number,
-    paymentMethodId: number
-  ): Observable<any> {
-    const apiUrl = 'http://localhost:8080/api/participations';
-    const body = { userId, fitnessprogramId, paymentMethodId };
-    return this.http.post<any>(apiUrl, body);
-  }
-
   updateProgram(program: Program): Observable<Program> {
     const url = `${this.baseUrl}/${program.id}`;
     return this.http.put<Program>(url, program);

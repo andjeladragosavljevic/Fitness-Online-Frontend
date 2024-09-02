@@ -3,18 +3,34 @@
 </div>
 
 <div class="participation-list-container">
-  <div *ngIf="!error && participations.length > 0">
-    <div
-      *ngFor="let participation of participations"
-      class="participation-card"
-    >
-      <h3>{{ participation.fitnessprogram.name }}</h3>
-      <p>Date: {{ participation.participationTime | date : "shortDate" }}</p>
-      <p>Payment Method: {{ participation.paymentMethod.name }}</p>
+  <button mat-button (click)="toggleParticipationView()">
+    {{
+      current ? "Show Previous Participations" : "Show Current Participations"
+    }}
+  </button>
+
+  <div *ngIf="participations.length > 0; else noParticipations">
+    <div *ngFor="let participation of participations">
+      <mat-card>
+        <mat-card-title>
+          {{ participation.fitnessprogram.name }}
+        </mat-card-title>
+
+        <mat-card-content>
+          <p>Start Date: {{ participation.fitnessprogram.startDate | date }}</p>
+          <p>End Date: {{ participation.fitnessprogram.endDate | date }}</p>
+          <p>Payment Date: {{ participation.participationTime | date }}</p>
+          <p>Payment Method: {{ participation.paymentMethod.name }}</p>
+        </mat-card-content>
+        <a
+          href="/programs/{{ participation.fitnessprogram.id }}"
+          class="stretched-link"
+        ></a>
+      </mat-card>
     </div>
   </div>
 
-  <div *ngIf="!error && participations.length === 0">
-    <p>No previous participations found.</p>
-  </div>
+  <ng-template #noParticipations>
+    <p>No participations found.</p>
+  </ng-template>
 </div>

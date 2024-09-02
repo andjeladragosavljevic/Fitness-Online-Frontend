@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Program } from '../models/Program';
 import { ActivatedRoute } from '@angular/router';
 import { ProgramService } from '../services/program.service';
-import { CurrencyPipe, NgFor, NgIf, NgStyle } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { PaymentMethodComponent } from '../payment-method/payment-method.compone
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommentListComponent } from '../comment-list/comment-list.component';
 import moment from 'moment';
+import { ParticipationService } from '../services/participation.service';
 
 @Component({
   selector: 'app-program-detail',
@@ -22,19 +23,20 @@ import moment from 'moment';
     CurrencyPipe,
     NgStyle,
     CommentListComponent,
+    DatePipe,
   ],
   templateUrl: './program-detail.component.html',
   styleUrl: './program-detail.component.css',
 })
 export class ProgramDetailComponent {
   program: Program | undefined;
-  isLoading = true;
+  isDataLoaded = true;
   error: string | null = null;
+  currentDate = new Date();
+  endDate = new Date();
 
   baseUrl = 'http://localhost:8080';
   sanitizedImages: string[] = [];
-  formatedStartDate: string = '';
-  formatedEndDate: string = '';
 
   slideConfig = {
     slidesToShow: 2,
@@ -49,7 +51,8 @@ export class ProgramDetailComponent {
     private route: ActivatedRoute,
     private programService: ProgramService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private participationService: ParticipationService
   ) {}
 
   ngOnInit(): void {
@@ -63,21 +66,23 @@ export class ProgramDetailComponent {
     this.programService.getProgramById(id).subscribe({
       next: (data) => {
         this.program = data;
-
-        this.formatedStartDate = moment(data.startDate).format('DD MMM YYYY');
-        this.formatedEndDate = moment(data.endDate).format('DD MMM YYYY');
+        this.endDate = new Date(data.endDate);
 
         this.sanitizedImages = data.images.map((img) => {
           return `${this.baseUrl}${img}`;
         });
-        this.isLoading = false;
+        this.isDataLoaded = true;
       },
       error: (err) => {
         this.error = 'Failed to load program details.';
         console.error(err);
-        this.isLoading = false;
+        this.isDataLoaded = false;
       },
     });
+  }
+
+  isProgramCompleted() {
+    return this.currentDate > this.endDate;
   }
 
   getColor(difficulty: string | undefined): string {
@@ -99,8 +104,8 @@ export class ProgramDetailComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.programService
-          .participateInProgram(41, id, result.paymentMethod)
+        this.participationService
+          .participateInProgram(31, id, result.paymentMethod)
           .subscribe({
             next: (response) => {
               if (

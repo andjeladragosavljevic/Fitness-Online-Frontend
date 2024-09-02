@@ -1,4 +1,5 @@
-<div class="program-detail-container" *ngIf="program && !isLoading">
+@if(program && isDataLoaded){
+<div class="program-detail-container">
   <h2>{{ program.name }}</h2>
   <ngx-slick-carousel
     class="program-slider"
@@ -18,7 +19,7 @@
   </p>
   <p class="duration">
     Duration:
-    {{ this.formatedStartDate }} - {{ this.formatedEndDate }}
+    {{ program.startDate | date }} - {{ program.endDate | date }}
   </p>
   <p class="price listing-price">
     {{ program.price | currency : "USD" : "symbol" }}
@@ -47,18 +48,17 @@
     </p>
     <p class="instructor">Contact: {{ program.instructor.email }}</p>
   </div>
+  <div class="footer-spacer"></div>
+  @if(!isProgramCompleted()){
   <div>
     <button mat-button (click)="openPaymentModal()">Join Program</button>
   </div>
+  }
 </div>
-<div class="footer-spacer"></div>
-
-<div *ngIf="isLoading">
+} @else {
+<div class="spinner-div">
   <div class="spinner"></div>
 </div>
-
-<div *ngIf="error" class="error-message">
-  <p>{{ error }}</p>
-</div>
+}
 
 <app-comment-list [program]="this.program"></app-comment-list>

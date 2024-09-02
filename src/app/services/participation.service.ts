@@ -11,7 +11,21 @@ export class ParticipationService {
 
   constructor(private http: HttpClient) {}
 
-  getUserParticipations(userId: number): Observable<Participation[]> {
-    return this.http.get<Participation[]>(`${this.baseUrl}/user/${userId}`);
+  getUserParticipations(
+    userId: number,
+    current: boolean
+  ): Observable<Participation[]> {
+    return this.http.get<Participation[]>(
+      `${this.baseUrl}/user/${userId}?current=${current}`
+    );
+  }
+
+  participateInProgram(
+    userId: number,
+    fitnessprogramId: number,
+    paymentMethodId: number
+  ): Observable<any> {
+    const body = { userId, fitnessprogramId, paymentMethodId };
+    return this.http.post<any>(this.baseUrl, body);
   }
 }

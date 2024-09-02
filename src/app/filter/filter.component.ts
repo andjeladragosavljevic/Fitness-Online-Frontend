@@ -8,7 +8,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { JsonPipe, NgFor, NgIf } from '@angular/common';
+import { JsonPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { CategoryService } from '../services/category.service';
 import { AttributeService } from '../services/attribute.service';
 import { Attribute } from '../models/Attribute';
@@ -29,6 +29,7 @@ import { ProgramStatus } from '../models/ProgramStatus';
     NgIf,
     JsonPipe,
     MatMomentDateModule,
+    NgClass,
   ],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.css',
