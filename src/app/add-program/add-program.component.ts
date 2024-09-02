@@ -107,7 +107,6 @@ export class AddProgramComponent implements OnInit {
     ) {
       const program = this.navigation.extras.state['program'] as Program;
 
-      console.log('🚀 ~ AddProgramComponent ~ ngOnInit ~ program:', program);
       if (program) {
         const programData: Program = {
           ...program,
@@ -121,7 +120,6 @@ export class AddProgramComponent implements OnInit {
           return `${this.baseUrl}${img}`;
         });
 
-        console.log('Program data:', program.name);
         this.addForm.patchValue(programData);
         this.imageUrls = program.images;
         this.isEditMode = true;
@@ -210,21 +208,13 @@ export class AddProgramComponent implements OnInit {
   }
   removeImage(index: number): void {
     this.files.splice(index, 1);
-    this.imageUrls.splice(index, 1);
     const removedImage = this.imageUrls[index];
-    console.log(
-      '🚀 ~ AddProgramComponent ~ removeImage ~ imageUrls:',
-      this.imageUrls
-    );
+    this.imageUrls.splice(index, 1);
+
     this.removedImages.push(removedImage);
   }
 
   onSubmit(): void {
-    console.log(
-      '🚀 ~ AddProgramComponent ~ onSubmit ~ (this.addForm:',
-      this.addForm
-    );
-
     if (this.addForm.valid) {
       const specificAttributesArray = this.addForm.value.specificAttributes
         ? Object.keys(this.addForm.value.specificAttributes).map((key) => ({
