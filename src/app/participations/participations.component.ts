@@ -24,7 +24,7 @@ export class ParticipationsComponent {
   }
 
   loadParticipations(): void {
-    const userId = 41;
+    const userId = 31;
     this.participationService
       .getUserParticipations(userId, this.current)
       .subscribe({

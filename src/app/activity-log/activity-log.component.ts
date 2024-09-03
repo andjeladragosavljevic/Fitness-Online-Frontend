@@ -10,16 +10,25 @@ import {
   Validators,
 } from '@angular/forms';
 import { DifficultyLevel } from '../models/DifficultyLevel';
+import { ProgressChartComponent } from '../progress-chart/progress-chart.component';
 @Component({
   selector: 'app-activity-log',
   standalone: true,
-  imports: [NgFor, NgIf, AppMaterialModule, ReactiveFormsModule, DatePipe],
+  imports: [
+    NgFor,
+    NgIf,
+    AppMaterialModule,
+    ReactiveFormsModule,
+    DatePipe,
+    ProgressChartComponent,
+  ],
   templateUrl: './activity-log.component.html',
   styleUrl: './activity-log.component.css',
+  providers: [DatePipe],
 })
 export class ActivityLogComponent {
   activityLogs: ActivityLog[] = [];
-  userId = 41;
+  userId = 31;
   activityLogForm!: FormGroup;
   difficultyLevels = Object.values(DifficultyLevel);
 
@@ -50,7 +59,7 @@ export class ActivityLogComponent {
   }
 
   onSubmit(): void {
-    this.activityLogForm.value.userId = 41;
+    this.activityLogForm.value.userId = 31;
     if (this.activityLogForm.valid) {
       this.activityLogService
         .addActivityLog(this.activityLogForm.value)
