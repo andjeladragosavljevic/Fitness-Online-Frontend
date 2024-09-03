@@ -1,0 +1,22 @@
+.activity-log-container {
+  padding: 20px;
+}
+
+mat-card {
+  margin-bottom: 15px;
+  margin-top: 15px;
+  padding: 10px;
+}
+
+mat-card-title {
+  font-weight: bold;
+  color: var(--mdc-text-button-label-text-color, var(--mat-app-primary));
+}
+
+mat-card-content p {
+  margin: 5px 0;
+}
+
+.full-width {
+  width: 100%;
+}

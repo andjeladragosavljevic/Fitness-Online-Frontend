@@ -7,6 +7,7 @@ import { ProgramDetailComponent } from './program-detail/program-detail.componen
 import { MyProgramDetailComponent } from './my-program-detail/my-program-detail.component';
 import { AddProgramComponent } from './add-program/add-program.component';
 import { ParticipationsComponent } from './participations/participations.component';
+import { ActivityLogComponent } from './activity-log/activity-log.component';
 
 export const routes: Routes = [
   {
@@ -49,5 +50,14 @@ export const routes: Routes = [
     component: AddProgramComponent,
     title: 'Edit Program',
   },
-  { path: 'participations', component: ParticipationsComponent },
+  {
+    path: 'participations',
+    component: ParticipationsComponent,
+    title: 'Participations',
+  },
+  {
+    path: 'activity-log',
+    component: ActivityLogComponent,
+    title: 'Activity Log',
+  },
 ];

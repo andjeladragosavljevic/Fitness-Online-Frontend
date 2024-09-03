@@ -1,0 +1,77 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title class="panel-title">Log Activity</mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <form class="container" [formGroup]="activityLogForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Exercise Type</mat-label>
+          <input formControlName="exerciseType" matInput type="text" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Duration (minutes)</mat-label>
+          <input formControlName="duration" matInput type="number" />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Difficulty Level</mat-label>
+          <mat-select formControlName="difficultyLevel">
+            <mat-option *ngFor="let level of difficultyLevels" [value]="level">
+              {{ level }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Result</mat-label>
+          <input formControlName="result" matInput type="number" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </form>
+</mat-expansion-panel>
+
+<div class="activity-log-container">
+  <button mat-stroked-button color="primary" (click)="downloadActivityLogPdf()">
+    Download PDF
+  </button>
+  <div *ngFor="let log of activityLogs">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>
+            {{ log.exerciseType }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{
+              log.createdAt | date : "dd.MM.yyyy, HH:mm:ss"
+            }}</mat-card-subtitle
+          >
+          <mat-card-actions>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="deleteActivityLog(log.id)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Duration: {{ log.duration }} minutes</p>
+        <p>Intensity: {{ log.difficultyLevel }}</p>
+        <p *ngIf="log.result">Result: {{ log.result }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
