@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivityLog } from '../models/ActivityLog';
 import { ActivityLogService } from '../services/activity-log.service';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
@@ -11,6 +11,8 @@ import {
 } from '@angular/forms';
 import { DifficultyLevel } from '../models/DifficultyLevel';
 import { ProgressChartComponent } from '../progress-chart/progress-chart.component';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 @Component({
   selector: 'app-activity-log',
   standalone: true,
@@ -27,10 +29,13 @@ import { ProgressChartComponent } from '../progress-chart/progress-chart.compone
   providers: [DatePipe],
 })
 export class ActivityLogComponent {
+  @ViewChild(ProgressChartComponent)
+  progressChartComponent!: ProgressChartComponent;
   activityLogs: ActivityLog[] = [];
-  userId = 31;
+  userId = 41;
   activityLogForm!: FormGroup;
   difficultyLevels = Object.values(DifficultyLevel);
+  imgData = '';
 
   constructor(
     private fb: FormBuilder,
@@ -59,7 +64,7 @@ export class ActivityLogComponent {
   }
 
   onSubmit(): void {
-    this.activityLogForm.value.userId = 31;
+    this.activityLogForm.value.userId = 41;
     if (this.activityLogForm.valid) {
       this.activityLogService
         .addActivityLog(this.activityLogForm.value)
@@ -84,5 +89,64 @@ export class ActivityLogComponent {
     }
   }
 
-  downloadActivityLogPdf() {}
+  downloadActivityLogPdf() {
+    const chartElement = document.getElementById('chart');
+
+    if (chartElement) {
+      html2canvas(chartElement).then((srcCanvas) => {
+        const destinationCanvas = document.createElement('canvas');
+        destinationCanvas.width = srcCanvas.width;
+        destinationCanvas.height = srcCanvas.height;
+
+        const destCtx = destinationCanvas.getContext('2d');
+
+        if (destCtx) {
+          destCtx.fillStyle = '#FFFFFF';
+          destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+
+          destCtx.drawImage(srcCanvas, 0, 0);
+
+          this.imgData = destinationCanvas.toDataURL('image/png');
+
+          const pdf = new jsPDF({
+            orientation: 'landscape',
+          });
+
+          const imgWidth = 400;
+          const imgHeight =
+            (destinationCanvas.height * imgWidth) / destinationCanvas.width;
+
+          pdf.setFontSize(18);
+          pdf.text('Activity Log Chart', 11, 8);
+          pdf.addImage(this.imgData, 'PNG', 0, 10, imgWidth, imgHeight);
+
+          let yPosition = imgHeight + 20;
+          let pageHeight = pdf.internal.pageSize.getHeight();
+          pdf.setFontSize(12);
+          pdf.text('List of Activities:', 11, yPosition);
+
+          this.activityLogs.forEach((log, index) => {
+            const logDetails = `
+            Activity ${index + 1}: 
+            Exercise: ${log.exerciseType}, 
+            Duration: ${log.duration} mins, 
+            Difficulty: ${log.difficultyLevel}, 
+            Result: ${log.result}
+            `;
+            if (yPosition > pageHeight - 20) {
+              pdf.addPage();
+              yPosition = 20;
+            }
+
+            yPosition += 30;
+            pdf.text(logDetails, 11, yPosition);
+          });
+
+          pdf.save('activity-log-chart.pdf');
+        } else {
+          console.error('Failed to get canvas context');
+        }
+      });
+    }
+  }
 }

@@ -1,0 +1,30 @@
+.full-width {
+  width: 100%;
+}
+
+mat-card {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+.chart-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #d5d3f5;
+}
+
+mat-card {
+  font-weight: bold;
+  margin-bottom: 20px;
+
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px
+    var(--mdc-text-button-label-text-color, var(--mat-app-primary));
+  background-color: #fff;
+}
+
+::ng-deep .ngx-charts .line-highlight {
+  display: block !important;
+}

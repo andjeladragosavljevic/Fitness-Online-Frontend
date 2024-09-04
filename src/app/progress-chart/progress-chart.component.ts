@@ -44,7 +44,7 @@ export class ProgressChartComponent implements OnInit {
   }
 
   loadActivityLogs(): void {
-    this.activityLogService.getAllActivitiesByUserId(31).subscribe({
+    this.activityLogService.getAllActivitiesByUserId(41).subscribe({
       next: (data) => {
         console.log(
           '🚀 ~ ProgressChartComponent ~ this.activityLogService.getAllActivitiesByUserId ~ data:',
@@ -62,22 +62,24 @@ export class ProgressChartComponent implements OnInit {
   filterLogs(): void {
     const { startDate, endDate } = this.dateForm.value;
 
-    this.filteredActivityLogs = this.activityLogs.filter((log) => {
-      const logDate = new Date(log.createdAt);
-      return logDate >= startDate && logDate <= endDate;
-    });
-    console.log(
-      '🚀 ~ ProgressChartComponent ~ this.filteredActivityLogs=this.activityLogs.filter ~ filteredActivityLogs:',
-      this.filteredActivityLogs
-    );
+    const start = new Date(startDate).setHours(0, 0, 0, 0);
+    console.log('🚀 ~ ProgressChartComponent ~ filterLogs ~ start:', start);
+    const end = new Date(endDate).setHours(23, 59, 59, 999);
 
-    this.chartData = this.filteredActivityLogs.map((log) => ({
-      name: this.datePipe.transform(log.createdAt, 'shortDate') || '',
-      value: log.result,
-    }));
-    console.log(
-      '🚀 ~ ProgressChartComponent ~ this.chartData=this.filteredActivityLogs.map ~  this.chartData:',
-      this.chartData
-    );
+    this.filteredActivityLogs = this.activityLogs.filter((log) => {
+      const logDate = new Date(log.createdAt).setHours(0, 0, 0);
+
+      return logDate >= start && logDate <= end;
+    });
+
+    this.chartData = [
+      {
+        name: 'Weight Progress',
+        series: this.filteredActivityLogs.map((log) => ({
+          name: this.datePipe.transform(log.createdAt, 'shortDate') || '',
+          value: log.result,
+        })),
+      },
+    ];
   }
 }

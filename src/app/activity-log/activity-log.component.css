@@ -20,3 +20,12 @@ mat-card-content p {
 .full-width {
   width: 100%;
 }
+ngx-charts {
+  font-size: 14px; /* Povećaj veličinu fonta */
+  font-weight: bold; /* Podebljaj tekst za bolju vidljivost */
+  color: #000000; /* Podesi da boja teksta bude crna */
+}
+
+ngx-charts text {
+  fill: #000000 !important; /* Osiguraj da tekst unutar grafikona bude crne boje */
+}

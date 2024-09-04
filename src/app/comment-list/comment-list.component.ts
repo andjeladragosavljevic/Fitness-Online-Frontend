@@ -43,7 +43,7 @@ export class CommentListComponent implements OnInit {
     const programId = this.program?.id ?? 0;
     const content = this.commentForm.get('comment')?.value;
 
-    this.commentService.createComment(31, programId, content).subscribe(() => {
+    this.commentService.createComment(41, programId, content).subscribe(() => {
       this.loadComments();
       this.commentForm.reset();
     });
