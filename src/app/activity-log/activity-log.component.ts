@@ -32,7 +32,7 @@ export class ActivityLogComponent {
   @ViewChild(ProgressChartComponent)
   progressChartComponent!: ProgressChartComponent;
   activityLogs: ActivityLog[] = [];
-  userId = 41;
+  userId = 31;
   activityLogForm!: FormGroup;
   difficultyLevels = Object.values(DifficultyLevel);
   imgData = '';
@@ -64,7 +64,7 @@ export class ActivityLogComponent {
   }
 
   onSubmit(): void {
-    this.activityLogForm.value.userId = 41;
+    this.activityLogForm.value.userId = 31;
     if (this.activityLogForm.valid) {
       this.activityLogService
         .addActivityLog(this.activityLogForm.value)
@@ -93,59 +93,45 @@ export class ActivityLogComponent {
     const chartElement = document.getElementById('chart');
 
     if (chartElement) {
-      html2canvas(chartElement).then((srcCanvas) => {
-        const destinationCanvas = document.createElement('canvas');
-        destinationCanvas.width = srcCanvas.width;
-        destinationCanvas.height = srcCanvas.height;
+      html2canvas(chartElement).then((canvas) => {
+        const imgWidth = 400;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const imgData = canvas.toDataURL('image/png');
 
-        const destCtx = destinationCanvas.getContext('2d');
+        const pdf = new jsPDF({
+          orientation: 'landscape',
+        });
 
-        if (destCtx) {
-          destCtx.fillStyle = '#FFFFFF';
-          destCtx.fillRect(0, 0, srcCanvas.width, srcCanvas.height);
+        pdf.setFontSize(18);
+        pdf.text('Activity Log Chart', 11, 8);
+        pdf.addImage(imgData, 'PNG', 0, 10, imgWidth, imgHeight);
 
-          destCtx.drawImage(srcCanvas, 0, 0);
+        let yPosition = imgHeight + 20;
+        let pageHeight = pdf.internal.pageSize.getHeight(); // Visina trenutne strane
+        pdf.setFontSize(12);
+        pdf.text('List of Activities:', 11, yPosition);
+        yPosition += 10;
 
-          this.imgData = destinationCanvas.toDataURL('image/png');
+        this.activityLogs.forEach((log, index) => {
+          const logDetails = `
+        Activity ${index + 1}: 
+        Exercise: ${log.exerciseType}, 
+        Duration: ${log.duration} mins, 
+        Difficulty: ${log.difficultyLevel}, 
+        Result: ${log.result}
+        `;
 
-          const pdf = new jsPDF({
-            orientation: 'landscape',
-          });
+          // Provera da li ima dovoljno prostora na trenutnoj strani
+          if (yPosition > pageHeight - 20) {
+            pdf.addPage(); // Dodavanje nove strane
+            yPosition = 20; // Resetovanje pozicije za novu stranu
+          }
 
-          const imgWidth = 400;
-          const imgHeight =
-            (destinationCanvas.height * imgWidth) / destinationCanvas.width;
+          pdf.text(logDetails, 11, yPosition);
+          yPosition += 30; // Pomeranje za sledeći unos
+        });
 
-          pdf.setFontSize(18);
-          pdf.text('Activity Log Chart', 11, 8);
-          pdf.addImage(this.imgData, 'PNG', 0, 10, imgWidth, imgHeight);
-
-          let yPosition = imgHeight + 20;
-          let pageHeight = pdf.internal.pageSize.getHeight();
-          pdf.setFontSize(12);
-          pdf.text('List of Activities:', 11, yPosition);
-
-          this.activityLogs.forEach((log, index) => {
-            const logDetails = `
-            Activity ${index + 1}: 
-            Exercise: ${log.exerciseType}, 
-            Duration: ${log.duration} mins, 
-            Difficulty: ${log.difficultyLevel}, 
-            Result: ${log.result}
-            `;
-            if (yPosition > pageHeight - 20) {
-              pdf.addPage();
-              yPosition = 20;
-            }
-
-            yPosition += 30;
-            pdf.text(logDetails, 11, yPosition);
-          });
-
-          pdf.save('activity-log-chart.pdf');
-        } else {
-          console.error('Failed to get canvas context');
-        }
+        pdf.save('activity-log-chart.pdf');
       });
     }
   }

@@ -105,7 +105,7 @@ export class ProgramDetailComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.participationService
-          .participateInProgram(41, id, result.paymentMethod)
+          .participateInProgram(31, id, result.paymentMethod)
           .subscribe({
             next: (response) => {
               if (
