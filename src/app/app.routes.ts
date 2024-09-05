@@ -8,6 +8,7 @@ import { MyProgramDetailComponent } from './my-program-detail/my-program-detail.
 import { AddProgramComponent } from './add-program/add-program.component';
 import { ParticipationsComponent } from './participations/participations.component';
 import { ActivityLogComponent } from './activity-log/activity-log.component';
+import { MessageListComponent } from './message-list/message-list.component';
 
 export const routes: Routes = [
   {
@@ -59,5 +60,9 @@ export const routes: Routes = [
     path: 'activity-log',
     component: ActivityLogComponent,
     title: 'Activity Log',
+  },
+  {
+    path: 'message-list',
+    component: MessageListComponent,
   },
 ];

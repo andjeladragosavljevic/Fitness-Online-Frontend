@@ -1,0 +1,16 @@
+<div class="message-container">
+  <div class="message-list">
+    <div *ngFor="let message of messages">
+      <p><strong>From:</strong> {{ message.senderId }}</p>
+      <p>{{ message.content }}</p>
+    </div>
+  </div>
+
+  <div class="message-form">
+    <textarea
+      [(ngModel)]="newMessageContent"
+      placeholder="Type your message"
+    ></textarea>
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>
