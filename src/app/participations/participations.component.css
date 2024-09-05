@@ -5,6 +5,7 @@
 mat-card {
   margin-bottom: 15px;
   padding: 10px;
+  box-shadow: 0 4px 5px gray;
 }
 
 mat-card-title {

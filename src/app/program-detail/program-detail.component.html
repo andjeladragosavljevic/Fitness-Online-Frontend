@@ -1,60 +1,66 @@
 @if(program && isDataLoaded){
-<div class="program-detail-container">
-  <h2>{{ program.name }}</h2>
-  <ngx-slick-carousel
-    class="program-slider"
-    #slickModal="slick-carousel"
-    [config]="slideConfig"
-  >
-    <div ngxSlickItem *ngFor="let img of sanitizedImages" class="slide">
-      <img [src]="img" alt="{{ img }}" class="program-image" />
-    </div>
-  </ngx-slick-carousel>
-  <p class="category">Category: {{ program.category.name }}</p>
-  <p class="difficulty">
-    Difficulty Level:
-    <span [ngStyle]="{ color: getColor(program.difficultyLevel) }">
-      {{ program.difficultyLevel }}
-    </span>
-  </p>
-  <p class="duration">
-    Duration:
-    {{ program.startDate | date }} - {{ program.endDate | date }}
-  </p>
-  <p class="price listing-price">
-    {{ program.price | currency : "USD" : "symbol" }}
-  </p>
-  <p class="location">{{ program.location }}</p>
-  <p class="description">{{ program.description }}</p>
-
-  <div
-    *ngIf="program.specificAttributes.length > 0"
-    class="specific-attributes"
-  >
-    <h3>Specific Attributes</h3>
-    <div class="attribute" *ngFor="let attribute of program.specificAttributes">
-      <span class="attribute-name">{{ attribute.name }}:</span>
-      <span class="attribute-value">{{ attribute.value }}</span>
-    </div>
-  </div>
-
-  <div>
-    <p class="instructor">
-      Instructor:
-      <span
-        >{{ program.instructor.firstName }}
-        {{ program.instructor.lastName }}</span
-      >
+<mat-card class="program-detail-container">
+  <mat-card-title>{{ program.name }}</mat-card-title>
+  <mat-card-content>
+    <ngx-slick-carousel
+      class="program-slider"
+      #slickModal="slick-carousel"
+      [config]="slideConfig"
+    >
+      <div ngxSlickItem *ngFor="let img of sanitizedImages" class="slide">
+        <img [src]="img" alt="{{ img }}" class="program-image" />
+      </div>
+    </ngx-slick-carousel>
+    <p class="category">Category: {{ program.category.name }}</p>
+    <p class="difficulty">
+      Difficulty Level:
+      <span [ngStyle]="{ color: getColor(program.difficultyLevel) }">
+        {{ program.difficultyLevel }}
+      </span>
     </p>
-    <p class="instructor">Contact: {{ program.instructor.email }}</p>
-  </div>
+    <p class="duration">
+      Duration:
+      {{ program.startDate | date }} - {{ program.endDate | date }}
+    </p>
+    <p class="price listing-price">
+      {{ program.price | currency : "USD" : "symbol" }}
+    </p>
+    <p class="location">{{ program.location }}</p>
+    <p class="description">{{ program.description }}</p>
+
+    <div
+      *ngIf="program.specificAttributes.length > 0"
+      class="specific-attributes"
+    >
+      <h3>Specific Attributes</h3>
+      <div
+        class="attribute"
+        *ngFor="let attribute of program.specificAttributes"
+      >
+        <span class="attribute-name">{{ attribute.name }}:</span>
+        <span class="attribute-value">{{ attribute.value }}</span>
+      </div>
+    </div>
+
+    <div>
+      <p class="instructor">
+        Instructor:
+        <span
+          >{{ program.instructor.firstName }}
+          {{ program.instructor.lastName }}</span
+        >
+      </p>
+      <p class="instructor">Contact: {{ program.instructor.email }}</p>
+    </div>
+  </mat-card-content>
   <div class="footer-spacer"></div>
+
   @if(!isProgramCompleted()){
-  <div>
+  <mat-card-actions>
     <button mat-button (click)="openPaymentModal()">Join Program</button>
-  </div>
+  </mat-card-actions>
   }
-</div>
+</mat-card>
 } @else {
 <div class="spinner-div">
   <div class="spinner"></div>

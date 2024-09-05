@@ -8,7 +8,7 @@ mat-card {
   margin: 40px auto 40px auto;
   width: 450px;
   height: auto;
-  background-color: #f9f9f9;
+  box-shadow: 2px 2px 5px gray;
 }
 
 mat-card-title {
@@ -108,4 +108,8 @@ mat-icon {
 
 .add-button {
   font-size: 18px;
+}
+
+.footer-spacer {
+  height: 40px;
 }

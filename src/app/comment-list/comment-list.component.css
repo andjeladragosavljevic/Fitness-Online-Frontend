@@ -5,12 +5,9 @@ h2 {
 }
 
 .comment-container {
-  /* max-width: 800px; */
   margin: 20px auto 20px auto;
-  padding: 20px;
-  background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 5px gray;
 }
 
 .comment-container .comment-header {

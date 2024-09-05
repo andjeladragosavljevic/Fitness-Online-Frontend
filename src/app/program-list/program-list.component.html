@@ -11,19 +11,23 @@
   </div>
 
   <div *ngIf="!error" class="program-list">
-    <div *ngFor="let program of programs" class="program-card">
-      <img
-        *ngIf="program?.images?.length ?? false"
-        [src]="'http://localhost:8080' + program.images[0]"
-        alt="{{ program.name }}"
-        class="program-image"
-      />
-      <h3>{{ program.name }}</h3>
-      <p class="price">{{ program.price | currency : "USD" : "symbol" }}</p>
-      <button mat-button [routerLink]="['/programs', program.id]">
-        View Details
-      </button>
-    </div>
+    <mat-card *ngFor="let program of programs" class="program-card">
+      <mat-card-content>
+        <img
+          *ngIf="program?.images?.length ?? false"
+          [src]="'http://localhost:8080' + program.images[0]"
+          alt="{{ program.name }}"
+          class="program-image"
+        />
+        <h3>{{ program.name }}</h3>
+        <p class="price">{{ program.price | currency : "USD" : "symbol" }}</p>
+      </mat-card-content>
+      <mat-card-actions class="card-actions">
+        <button mat-button [routerLink]="['/programs', program.id]">
+          View Details
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </div>
   } @else {
   <div class="spinner-div">

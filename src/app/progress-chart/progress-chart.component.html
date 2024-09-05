@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="isBrowser">
   <mat-card-title class="chart-title">Activity Log Chart</mat-card-title>
   <mat-card-content>
     <form class="container" [formGroup]="dateForm" (ngSubmit)="filterLogs()">
@@ -40,6 +40,7 @@
     </form>
 
     <canvas
+      id="chart"
       baseChart
       [data]="lineChartData"
       [options]="lineChartOptions"

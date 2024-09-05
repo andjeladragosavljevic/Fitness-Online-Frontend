@@ -1,36 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import { ActivityLogService } from '../services/activity-log.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { DatePipe, CommonModule } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { ChartConfiguration, ChartType } from 'chart.js';
+import { isPlatformBrowser } from '@angular/common';
 @Component({
   selector: 'app-progress-chart',
   standalone: true,
-  imports: [AppMaterialModule, ReactiveFormsModule, BaseChartDirective],
+  imports: [AppMaterialModule, ReactiveFormsModule, BaseChartDirective, NgIf],
   templateUrl: './progress-chart.component.html',
   styleUrl: './progress-chart.component.css',
+  providers: [provideCharts(withDefaultRegisterables())],
 })
 export class ProgressChartComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+  isBrowser!: boolean;
   activityLogs: any[] = [];
   filteredActivityLogs: any[] = [];
   chartData: any[] = [];
   dateForm: FormGroup;
+
   public lineChartData: ChartConfiguration['data'] = {
     datasets: [
       {
-        data: [],
+        data: [], //rezultat
         label: 'Weight Progress',
-        backgroundColor: 'rgba(63, 81, 181, 0.3)',
-        borderColor: 'rgba(63, 81, 181, 1)',
-        pointBackgroundColor: 'rgba(63, 81, 181, 1)',
-        pointBorderColor: '#fff',
+        backgroundColor: 'rgb(186, 0, 92)',
+        borderColor: 'rgb(186, 0, 92)',
+        pointBackgroundColor: 'rgb(186, 0, 92)',
+        pointBorderColor: 'rgb(186, 0, 92)',
         fill: 'origin',
       },
     ],
-    labels: [],
+    labels: [], //datumi
   };
   public lineChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -38,27 +50,32 @@ export class ProgressChartComponent implements OnInit {
   public lineChartType: ChartType = 'line';
 
   constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
     private activityLogService: ActivityLogService,
     private fb: FormBuilder,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private cd: ChangeDetectorRef
   ) {
+    const today = new Date();
+    const lastWeek = new Date();
+    lastWeek.setDate(today.getDate() - 7);
+
     this.dateForm = this.fb.group({
-      startDate: [new Date()],
-      endDate: [new Date()],
+      startDate: [lastWeek],
+      endDate: [today],
     });
   }
 
   ngOnInit(): void {
-    this.loadActivityLogs();
+    this.isBrowser = isPlatformBrowser(this.platformId);
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadActivityLogs(); // Samo se učitava ako je u browseru
+    }
   }
 
   loadActivityLogs(): void {
     this.activityLogService.getAllActivitiesByUserId(31).subscribe({
       next: (data) => {
-        console.log(
-          '🚀 ~ ProgressChartComponent ~ this.activityLogService.getAllActivitiesByUserId ~ data:',
-          data
-        );
         this.activityLogs = data;
         this.filterLogs();
       },
@@ -81,8 +98,11 @@ export class ProgressChartComponent implements OnInit {
     this.lineChartData.labels = this.filteredActivityLogs.map((log) =>
       this.datePipe.transform(log.createdAt, 'shortDate')
     );
+
     this.lineChartData.datasets[0].data = this.filteredActivityLogs.map(
       (log) => log.result
     );
+
+    if (this.chart) this.chart.chart?.update();
   }
 }

@@ -94,7 +94,7 @@ export class ActivityLogComponent {
 
     if (chartElement) {
       html2canvas(chartElement).then((canvas) => {
-        const imgWidth = 400;
+        const imgWidth = 200;
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         const imgData = canvas.toDataURL('image/png');
 
@@ -107,7 +107,7 @@ export class ActivityLogComponent {
         pdf.addImage(imgData, 'PNG', 0, 10, imgWidth, imgHeight);
 
         let yPosition = imgHeight + 20;
-        let pageHeight = pdf.internal.pageSize.getHeight(); // Visina trenutne strane
+        let pageHeight = pdf.internal.pageSize.getHeight();
         pdf.setFontSize(12);
         pdf.text('List of Activities:', 11, yPosition);
         yPosition += 10;
@@ -121,14 +121,13 @@ export class ActivityLogComponent {
         Result: ${log.result}
         `;
 
-          // Provera da li ima dovoljno prostora na trenutnoj strani
           if (yPosition > pageHeight - 20) {
-            pdf.addPage(); // Dodavanje nove strane
-            yPosition = 20; // Resetovanje pozicije za novu stranu
+            pdf.addPage();
+            yPosition = 20;
           }
 
           pdf.text(logDetails, 11, yPosition);
-          yPosition += 30; // Pomeranje za sledeći unos
+          yPosition += 30;
         });
 
         pdf.save('activity-log-chart.pdf');

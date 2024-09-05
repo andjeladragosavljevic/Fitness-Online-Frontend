@@ -19,13 +19,6 @@ export class ActivityLogService {
     return this.http.get<ActivityLog[]>(`${this.baseUrl}/user/${userId}`);
   }
 
-  updateActivityLog(
-    id: number,
-    activityLog: ActivityLog
-  ): Observable<ActivityLog> {
-    return this.http.put<ActivityLog>(`${this.baseUrl}/${id}`, activityLog);
-  }
-
   deleteActivityLog(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }

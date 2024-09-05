@@ -34,10 +34,9 @@
 
 .program-card {
   width: 300px;
-  padding: 15px;
-  border: 1px solid #ccc;
+
   border-radius: 10px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 5px gray;
   height: 100%;
 }
 
@@ -62,7 +61,11 @@ mat-paginator {
   margin-bottom: 10px;
   color: rgb(255, 217, 225);
 }
-
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
 .price::before {
   background-image: url("/assets/4899556.png");
   background-size: 30px 30px;
