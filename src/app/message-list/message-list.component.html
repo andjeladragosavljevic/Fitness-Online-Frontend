@@ -1,16 +1,17 @@
-<div class="message-container">
+<div class="inbox-container">
   <div class="message-list">
-    <div *ngFor="let message of messages">
-      <p><strong>From:</strong> {{ message.senderId }}</p>
-      <p>{{ message.content }}</p>
+    <div *ngFor="let message of messages" class="message-item">
+      <div class="message-content">{{ message.content }}</div>
+      <div class="message-meta">{{ message.createdAt | date : "short" }}</div>
     </div>
   </div>
 
-  <div class="message-form">
-    <textarea
-      [(ngModel)]="newMessageContent"
-      placeholder="Type your message"
-    ></textarea>
-    <button (click)="sendMessage()">Send</button>
-  </div>
+  <form
+    [formGroup]="messageForm"
+    (ngSubmit)="sendMessage()"
+    class="message-form"
+  >
+    <input formControlName="content" placeholder="Type a message" />
+    <button type="submit" [disabled]="!messageForm.valid">Send</button>
+  </form>
 </div>

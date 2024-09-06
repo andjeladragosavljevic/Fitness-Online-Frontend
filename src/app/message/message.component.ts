@@ -4,6 +4,8 @@ import { Message } from '../models/Message';
 import { MessageService } from '../services/message.service';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { User } from '../models/User';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-message',
@@ -13,32 +15,22 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './message.component.css',
 })
 export class MessageComponent {
-  messages: Message[] = [];
-  newMessageContent: string = '';
-  selectedUserId: number = 41;
+  users: User[] = [];
+  selectedUser: User | null = null;
 
-  constructor(private messageService: MessageService) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.loadMessages();
+    this.loadUsers();
   }
 
-  loadMessages() {
-    this.messageService
-      .getMessagesForUser(this.selectedUserId)
-      .subscribe((messages) => {
-        this.messages = messages;
-      });
+  loadUsers(): void {
+    this.userService.getAvailableUsers().subscribe((data) => {
+      this.users = data;
+    });
   }
 
-  sendMessage() {
-    if (this.newMessageContent.trim()) {
-      this.messageService
-        .sendMessage(this.selectedUserId, 42, this.newMessageContent)
-        .subscribe(() => {
-          this.newMessageContent = '';
-          this.loadMessages();
-        });
-    }
+  openChat(user: User): void {
+    this.selectedUser = user;
   }
 }
