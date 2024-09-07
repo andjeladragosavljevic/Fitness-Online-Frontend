@@ -8,7 +8,8 @@ import { MyProgramDetailComponent } from './my-program-detail/my-program-detail.
 import { AddProgramComponent } from './add-program/add-program.component';
 import { ParticipationsComponent } from './participations/participations.component';
 import { ActivityLogComponent } from './activity-log/activity-log.component';
-import { MessageListComponent } from './message-list/message-list.component';
+import { UserForCommunicationComponent } from './user-for-communication/user-for-communication.component';
+import { SubscriptionComponent } from './subscription/subscription.component';
 
 export const routes: Routes = [
   {
@@ -62,7 +63,12 @@ export const routes: Routes = [
     title: 'Activity Log',
   },
   {
-    path: 'message-list',
-    component: MessageListComponent,
+    path: 'user-list',
+    component: UserForCommunicationComponent,
+  },
+  {
+    path: 'subscriptions',
+    component: SubscriptionComponent,
+    title: 'Subscriptions',
   },
 ];

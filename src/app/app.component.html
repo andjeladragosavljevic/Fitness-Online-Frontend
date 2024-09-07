@@ -24,10 +24,15 @@
   <button [routerLink]="['/add-program']" mat-button>New program</button>
   <button routerLink="/participations" mat-button>My Participations</button>
   <button routerLink="/activity-log" mat-button>Activity log</button>
-  <button routerLink="/message-list" mat-button>Message List</button>
+
+  <!-- <button routerLink="/user-list" mat-button>Chat</button> -->
+
   <span class="spacer"></span>
-  <button mat-icon-button (click)="openDialog()">
+  <!-- <button mat-icon-button [matMenuTriggerFor]="userMenu">
     <mat-icon>message</mat-icon>
+  </button> -->
+  <button mat-icon-button [routerLink]="['/subscriptions']">
+    <mat-icon>subscriptions</mat-icon>
   </button>
   <button mat-icon-button [routerLink]="['/login']">
     <mat-icon>login</mat-icon>

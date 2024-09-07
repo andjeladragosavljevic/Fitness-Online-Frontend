@@ -1,0 +1,15 @@
+<div class="subscription-container">
+  <h2 class="title">Subscribe to a Category</h2>
+  <mat-list>
+    <mat-list-item *ngFor="let category of categories">
+      {{ category.name }}
+      <button
+        mat-button
+        color="primary"
+        (click)="subscribeToCategory(category)"
+      >
+        Subscribe
+      </button>
+    </mat-list-item>
+  </mat-list>
+</div>

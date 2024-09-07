@@ -22,4 +22,13 @@ export class MessageService {
   markMessageAsRead(messageId: number): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/read/${messageId}`, {});
   }
+
+  getMessagesBetweenUsers(
+    senderId: number,
+    receiverId: number
+  ): Observable<Message[]> {
+    return this.http.get<Message[]>(
+      `/api/messages/between?senderId=${senderId}&receiverId=${receiverId}`
+    );
+  }
 }

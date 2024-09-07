@@ -7,9 +7,10 @@ import { User } from '../models/User';
   providedIn: 'root',
 })
 export class UserService {
+  readonly baseUrl = 'http://localhost:8080/api/users';
   constructor(private http: HttpClient) {}
 
   getAvailableUsers(): Observable<User[]> {
-    return this.http.get<User[]>('/api/users/available');
+    return this.http.get<User[]>(`${this.baseUrl}/available?currentUserId=41`);
   }
 }
