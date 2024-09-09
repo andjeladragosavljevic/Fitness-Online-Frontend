@@ -8,12 +8,6 @@
   <mat-card-content>
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()" #form="ngForm">
       <mat-form-field appearance="outline">
-        <mat-icon matPrefix>person</mat-icon>
-        <mat-label>Instructor</mat-label>
-        <input formControlName="userId" matInput type="text" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
         <mat-label>Name</mat-label>
         <input formControlName="name" matInput type="text" />
       </mat-form-field>

@@ -10,6 +10,12 @@ import { ParticipationsComponent } from './participations/participations.compone
 import { ActivityLogComponent } from './activity-log/activity-log.component';
 import { UserForCommunicationComponent } from './user-for-communication/user-for-communication.component';
 import { SubscriptionComponent } from './subscription/subscription.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { ActivateAccountComponent } from './activate-account/activate-account.component';
+import { ProfileComponent } from './profile/profile.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { ChatComponent } from './chat/chat.component';
 
 export const routes: Routes = [
   {
@@ -31,6 +37,7 @@ export const routes: Routes = [
     path: 'my-programs',
     component: MyProgramsComponent,
     title: 'My Programs',
+    canActivate: [AuthGuardService],
   },
   {
     path: 'programs/:id',
@@ -41,34 +48,69 @@ export const routes: Routes = [
     path: 'my-programs/:id',
     component: MyProgramDetailComponent,
     title: 'My Program Detail',
+    canActivate: [AuthGuardService],
   },
   {
     path: 'add-program',
     component: AddProgramComponent,
     title: 'New Program',
+    canActivate: [AuthGuardService],
   },
   {
     path: 'edit-program',
     component: AddProgramComponent,
     title: 'Edit Program',
+    canActivate: [AuthGuardService],
   },
   {
     path: 'participations',
     component: ParticipationsComponent,
     title: 'Participations',
+    canActivate: [AuthGuardService],
   },
   {
     path: 'activity-log',
     component: ActivityLogComponent,
     title: 'Activity Log',
+    canActivate: [AuthGuardService],
   },
   {
-    path: 'user-list',
+    path: 'chat',
     component: UserForCommunicationComponent,
+    title: 'Chat',
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'chat/:userId',
+    component: ChatComponent,
+    title: 'Inbox',
+    canActivate: [AuthGuardService],
   },
   {
     path: 'subscriptions',
     component: SubscriptionComponent,
     title: 'Subscriptions',
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'registration',
+    component: RegistrationComponent,
+    title: 'Registration',
+  },
+  {
+    path: 'activate-account',
+    component: ActivateAccountComponent,
+    title: 'Account Activation',
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    title: 'Profile',
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    title: 'Login',
   },
 ];

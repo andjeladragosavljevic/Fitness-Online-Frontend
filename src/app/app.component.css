@@ -13,15 +13,15 @@ body {
   font-size: 32px !important;
 }
 
-.app-logo.mat-mdc-button {
-  font-size: 1.5rem;
+.mat-mdc-button {
+  font-size: 1.1rem;
 }
 
-.mat-mdc-button {
-  font-size: 1.3rem;
-}
 .mat-mdc-button:not(:disabled) {
   color: #fff;
+}
+.sidenav-container mat-icon {
+  color: black;
 }
 mat-icon {
   margin-right: 8px;
@@ -30,4 +30,56 @@ mat-icon {
 
 .spacer {
   flex: 1 1 auto;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 250px;
+}
+
+.app-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Styles for mobile view */
+@media (max-width: 600px) {
+  .sidenav {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: white;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .mat-sidenav.open {
+    transform: translateX(0);
+  }
+
+  .sidenav-container {
+    height: 100vh;
+  }
+}
+
+/* Styles for larger screens (desktop) */
+@media (min-width: 800px) {
+  .sidenav {
+    display: block;
+    position: relative;
+  }
+
+  .mat-toolbar button.mat-button {
+    color: white;
+  }
+
+  .mat-toolbar mat-icon {
+    color: white;
+  }
 }

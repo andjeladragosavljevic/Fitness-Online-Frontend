@@ -1,12 +1,9 @@
-<div class="user-list">
-  <h3>Available Users</h3>
-  <ul>
-    <li *ngFor="let user of users" (click)="openChat(user)">
+<div class="user-list-container">
+  <h2 class="title">Available Users</h2>
+  <ul class="user-list">
+    <li *ngFor="let user of availableUsers" (click)="openChat(user.id)">
+      <mat-icon>person</mat-icon>
       {{ user.firstName }} {{ user.lastName }}
     </li>
   </ul>
-</div>
-
-<div *ngIf="selectedUser">
-  <!-- <app-chat [selectedUser]="selectedUser"></app-chat> -->
 </div>

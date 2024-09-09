@@ -26,10 +26,8 @@
     <p class="location">{{ program.location }}</p>
     <p class="description">{{ program.description }}</p>
 
-    <div
-      *ngIf="program.specificAttributes.length > 0"
-      class="specific-attributes"
-    >
+    @if(program.specificAttributes.length > 0){
+    <div class="specific-attributes">
       <h3>Specific Attributes</h3>
       <div
         class="attribute"
@@ -39,6 +37,7 @@
         <span class="attribute-value">{{ attribute.value }}</span>
       </div>
     </div>
+    }
 
     <div>
       <p class="instructor">Contact: {{ program.instructor.email }}</p>

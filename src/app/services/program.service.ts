@@ -12,18 +12,24 @@ import { Program } from '../models/Program';
   providedIn: 'root',
 })
 export class ProgramService {
+  userId = Number(localStorage.getItem('userId')) || 0;
+
   readonly baseUrl = 'http://localhost:8080/api/programs';
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
+  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
+    if (typeof window !== 'undefined') {
+      this.userId = Number(localStorage.getItem('userId'));
+    }
+  }
 
   getAllPrograms(page: number, size: number): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get<any>(this.baseUrl, { params });
+    return this.http.get<any>(`this.baseUrl/${this.userId}`, { params });
   }
 
   createProgram(program: Program): Observable<Program> {
@@ -64,10 +70,14 @@ export class ProgramService {
       });
     }
 
-    return this.http.get<any>(`${this.baseUrl}/other-programs`, { params });
+    return this.http.get<any>(`${this.baseUrl}/other-programs/${this.userId}`, {
+      params,
+    });
   }
 
   getMyPrograms(filters: any, page: number, size: number): Observable<any> {
+    this.userId = Number(localStorage.getItem('userId')) || 0;
+
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
@@ -79,7 +89,9 @@ export class ProgramService {
         }
       });
     }
-    return this.http.get<any>(`${this.baseUrl}/my-programs`, { params });
+    return this.http.get<any>(`${this.baseUrl}/my-programs/${this.userId}`, {
+      params,
+    });
   }
 
   updateProgram(program: Program): Observable<Program> {

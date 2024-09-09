@@ -11,24 +11,21 @@ export class MessageService {
 
   constructor(private http: HttpClient) {}
 
-  sendMessage(message: Message): Observable<Message> {
-    return this.http.post<Message>(`${this.baseUrl}/send`, message);
+  getChatHistory(senderId: number, receiverId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/chat/${senderId}/${receiverId}`);
   }
 
-  getMessagesForUser(userId: number): Observable<Message[]> {
-    return this.http.get<Message[]>(`${this.baseUrl}/${userId}`);
+  sendMessage(message: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}`, message);
   }
 
   markMessageAsRead(messageId: number): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/read/${messageId}`, {});
   }
 
-  getMessagesBetweenUsers(
-    senderId: number,
-    receiverId: number
-  ): Observable<Message[]> {
-    return this.http.get<Message[]>(
-      `/api/messages/between?senderId=${senderId}&receiverId=${receiverId}`
-    );
+  sendMessageToAdvisor(advisorId: number, content: string): Observable<any> {
+    const senderId = Number(localStorage.getItem('userId'));
+    const message = { advisorId, content, senderId };
+    return this.http.post(`${this.baseUrl}/send`, message);
   }
 }

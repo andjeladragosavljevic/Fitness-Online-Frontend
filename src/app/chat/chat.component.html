@@ -1,0 +1,23 @@
+<div class="chat-container">
+  <div class="chat-history">
+    <div
+      *ngFor="let message of messages"
+      [ngClass]="{
+        sent: message.senderId === senderId,
+        received: message.senderId !== senderId
+      }"
+    >
+      <p>{{ message.content }}</p>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <textarea
+      [(ngModel)]="newMessage"
+      placeholder="Type your message"
+    ></textarea>
+    <button mat-raised-button color="primary" (click)="sendMessage()">
+      Send
+    </button>
+  </div>
+</div>

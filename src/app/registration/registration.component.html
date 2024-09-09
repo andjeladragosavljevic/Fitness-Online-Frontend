@@ -1,0 +1,75 @@
+<mat-card>
+  <mat-card-title> Create your account </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <div class="avatar-container">
+        <div
+          class="image-container"
+          *ngIf="file; else placeholder"
+          [ngClass]="{ 'box-shadow-avatar': !!file }"
+          [ngStyle]="{ 'background-image': 'url(' + file + ')' }"
+        ></div>
+
+        <ng-template #placeholder>
+          <div class="image-container avatar-placeholder"></div>
+        </ng-template>
+
+        <label for="avatar-input-file">
+          <div class="icon-wrapper">
+            <input
+              type="file"
+              id="avatar-input-file"
+              accept="image/*"
+              (change)="onFileChange($event)"
+              formControlName="avatar"
+            />
+            <mat-icon class="icon" fontIcon="edit"></mat-icon>
+          </div>
+        </label>
+      </div>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-label>First name</mat-label>
+        <input formControlName="firstName" matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-label>Last name</mat-label>
+        <input matInput type="text" formControlName="lastName" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-label>City</mat-label>
+        <input matInput type="text" formControlName="city" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" formControlName="username" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      <mat-form-field class="example-form-field" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+      </mat-form-field>
+
+      <div
+        id="recaptcha-container"
+        class="g-recaptcha"
+        data-sitekey="6Lf9fDkqAAAAANwNMvWoB-l1jpVELZOqKaIIVzIX"
+      ></div>
+
+      <button color="primary" mat-raised-button>Sign up</button>
+      <p>
+        Already have an account?
+        <a class="link-wrapper" href="/login">Sign in</a>
+      </p>
+    </form>
+  </mat-card-content>
+</mat-card>
+<div class="footer-spacer"></div>

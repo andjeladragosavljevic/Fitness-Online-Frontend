@@ -28,10 +28,8 @@
     <p class="location">{{ program.location }}</p>
     <p class="description">{{ program.description }}</p>
 
-    <div
-      *ngIf="program.specificAttributes.length > 0"
-      class="specific-attributes"
-    >
+    @if(program.specificAttributes.length > 0){
+    <div class="specific-attributes">
       <h3>Specific Attributes</h3>
       <div
         class="attribute"
@@ -42,6 +40,7 @@
       </div>
     </div>
 
+    }
     <div>
       <p class="instructor">
         Instructor:
@@ -55,7 +54,7 @@
   </mat-card-content>
   <div class="footer-spacer"></div>
 
-  @if(!isProgramCompleted()){
+  @if(!isProgramCompleted() && isLoggedIn()){
   <mat-card-actions>
     <button mat-button (click)="openPaymentModal()">Join Program</button>
   </mat-card-actions>
@@ -65,6 +64,12 @@
 <div class="spinner-div">
   <div class="spinner"></div>
 </div>
+} @if(isLoggedIn()){
+<ng-container>
+  <app-comment-list [program]="this.program"></app-comment-list>
+</ng-container>
+} @else{
+<ng-container>
+  <p class="login-message">Please log in to view the comments.</p>
+</ng-container>
 }
-
-<app-comment-list [program]="this.program"></app-comment-list>

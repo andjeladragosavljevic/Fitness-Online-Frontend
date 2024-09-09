@@ -55,6 +55,8 @@ export class AddProgramComponent implements OnInit {
   showLinkField: boolean = false;
   isEditMode: boolean = false;
 
+  userId = Number(localStorage.getItem('userId'));
+
   removedImages: string[] = [];
 
   navigation: Navigation | null = null;
@@ -88,7 +90,6 @@ export class AddProgramComponent implements OnInit {
         location: ['', Validators.required],
         contact: ['', Validators.required],
         images: [''],
-        userId: ['', Validators.required],
         startDate: ['', Validators.required],
         endDate: ['', Validators.required],
         youtubeLink: [''],
@@ -114,8 +115,6 @@ export class AddProgramComponent implements OnInit {
           images: this.imageUrls,
           categoryId: program.category.id,
           contact: program.instructor.email,
-
-          // specificAttributes: specificAttributesArray,
         } as Program;
         this.files = program.images.map((img) => {
           return `${this.baseUrl}${img}`;
@@ -226,6 +225,7 @@ export class AddProgramComponent implements OnInit {
 
       const programData: Program = {
         ...this.addForm.value,
+        userId: this.userId,
         images: this.imageUrls,
         specificAttributes: specificAttributesArray,
         removedImages: this.removedImages,
@@ -238,7 +238,6 @@ export class AddProgramComponent implements OnInit {
             this.resetInput();
             this.files = [];
             this.imageUrls = [];
-            // this.router.navigate(['/my-programs']); // Redirect after update
           },
           (error: any) => {
             console.error(error);
@@ -249,7 +248,6 @@ export class AddProgramComponent implements OnInit {
           () => {
             this.form.resetForm();
             this.resetInput();
-            //  this.router.navigate(['/my-programs']); // Redirect after creation
           },
           (error) => {
             console.error(error);

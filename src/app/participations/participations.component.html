@@ -1,7 +1,8 @@
-<div *ngIf="error" class="error-message">
+@if(error){
+<div class="error-message">
   {{ error }}
 </div>
-
+}
 <div class="participation-list-container">
   <button mat-button (click)="toggleParticipationView()">
     {{

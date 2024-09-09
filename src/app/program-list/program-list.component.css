@@ -59,7 +59,7 @@ mat-paginator {
   font-size: 32px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: rgb(255, 217, 225);
+  color: rgb(204, 102, 122);
 }
 .card-actions {
   display: flex;

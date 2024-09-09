@@ -1,0 +1,134 @@
+:host,
+body,
+html {
+  height: 100%;
+}
+
+mat-card {
+  margin: 40px auto 40px auto;
+  width: 450px;
+  height: auto;
+  box-shadow: 2px 2px 5px gray;
+}
+mat-card-title {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 20px;
+  color: rgb(204, 102, 122);
+}
+mat-form-field {
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+button {
+  width: 100%;
+}
+
+p {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.avatar-container {
+  position: relative;
+  width: 100px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+
+.image-container {
+  height: 100px;
+  width: 100px;
+  z-index: 1;
+  border-radius: 50%;
+  background-color: #fff;
+  background-position: center;
+  background-size: cover;
+  box-shadow: 0 5px 10px gray;
+}
+
+.avatar-placeholder {
+  background-image: url("../../assets/avatar-default-icon.png");
+  background-size: cover;
+}
+
+.icon-wrapper {
+  position: absolute;
+  height: 30px;
+  width: 30px;
+  padding: 0.35rem;
+  background-color: rgb(186, 0, 92);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  cursor: pointer;
+
+  .icon {
+    color: white;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+}
+
+.box-shadow-avatar {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.captcha-container {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.captcha-container .g-recaptcha {
+  width: 100%;
+}
+div {
+  width: 100%;
+}
+
+button {
+  font-size: 18px;
+}
+
+p {
+  display: inline;
+  font-size: 16px;
+}
+
+.recaptcha-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  z-index: 1;
+}
+
+.g-recaptcha {
+  width: 100%;
+}
+
+div.g-recaptcha {
+  margin: 0 auto;
+  width: 304px;
+  margin-bottom: 20px;
+}
+
+.footer-spacer {
+  height: 40px;
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Program } from '../models/Program';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProgramService } from '../services/program.service';
@@ -46,7 +46,8 @@ export class MyProgramDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private programService: ProgramService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +66,7 @@ export class MyProgramDetailComponent implements OnInit {
           return `${this.baseUrl}${img}`;
         });
         this.isDataLoaded = true;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         this.error = 'Failed to load program details.';
@@ -105,5 +107,9 @@ export class MyProgramDetailComponent implements OnInit {
         },
       });
     }
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

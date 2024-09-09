@@ -1,0 +1,33 @@
+.user-list-container {
+  padding: 20px;
+  margin: auto;
+}
+
+.user-list-container h2 {
+  font-weight: bold;
+  color: var(--mdc-text-button-label-text-color, var(--mat-app-primary));
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.user-list li {
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.user-list li:hover {
+  background-color: #f1f1f1;
+}
+
+.user-list li mat-icon {
+  margin-right: 10px;
+  color: #666;
+}

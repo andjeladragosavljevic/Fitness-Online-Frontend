@@ -1,0 +1,28 @@
+<mat-card>
+  <mat-card-title> Prijava </mat-card-title>
+  <mat-card-content>
+    <form (ngSubmit)="onLogin()" [formGroup]="loginForm">
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          type="text"
+          placeholder="Username"
+          autocomplete="username"
+          formControlName="username"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password"
+          formControlName="password"
+        />
+      </mat-form-field>
+
+      <button color="primary" type="submit" mat-raised-button>Login</button>
+      <a class="link-wrapper" href="/registration">Registration</a>
+    </form>
+  </mat-card-content>
+</mat-card>

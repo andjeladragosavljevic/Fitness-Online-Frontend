@@ -1,5 +1,5 @@
 import { DatePipe, NgFor } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Comment } from '../models/Comment';
 import { AppMaterialModule } from '../app-material/app-material.module';
 import {
@@ -22,6 +22,8 @@ export class CommentListComponent implements OnInit {
   @Input() program: Program | undefined;
   comments: Comment[] = [];
   commentForm!: FormGroup;
+  userId = Number(localStorage.getItem('userId'));
+  token = localStorage.getItem('token');
 
   constructor(private fb: FormBuilder, private commentService: CommentService) {
     this.commentForm = this.fb.group({
@@ -30,6 +32,12 @@ export class CommentListComponent implements OnInit {
   }
   ngOnInit(): void {
     this.loadComments();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['program'] && this.program) {
+      this.loadComments();
+    }
   }
 
   loadComments() {
@@ -43,10 +51,12 @@ export class CommentListComponent implements OnInit {
     const programId = this.program?.id ?? 0;
     const content = this.commentForm.get('comment')?.value;
 
-    this.commentService.createComment(31, programId, content).subscribe(() => {
-      this.loadComments();
-      this.commentForm.reset();
-    });
+    this.commentService
+      .createComment(this.userId, programId, content)
+      .subscribe(() => {
+        this.loadComments();
+        this.commentForm.reset();
+      });
   }
 
   deleteComment(commentId: number) {

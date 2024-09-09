@@ -30,6 +30,9 @@ export class ProgressChartComponent implements OnInit {
   chartData: any[] = [];
   dateForm: FormGroup;
 
+  userId = Number(localStorage.getItem('userId'));
+  token = localStorage.getItem('token');
+
   public lineChartData: ChartConfiguration['data'] = {
     datasets: [
       {
@@ -74,7 +77,7 @@ export class ProgressChartComponent implements OnInit {
   }
 
   loadActivityLogs(): void {
-    this.activityLogService.getAllActivitiesByUserId(31).subscribe({
+    this.activityLogService.getAllActivitiesByUserId(this.userId).subscribe({
       next: (data) => {
         this.activityLogs = data;
         this.filterLogs();

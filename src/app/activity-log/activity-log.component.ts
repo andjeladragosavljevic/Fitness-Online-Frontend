@@ -32,7 +32,9 @@ export class ActivityLogComponent {
   @ViewChild(ProgressChartComponent)
   progressChartComponent!: ProgressChartComponent;
   activityLogs: ActivityLog[] = [];
-  userId = 31;
+  userId = Number(localStorage.getItem('userId'));
+  token = localStorage.getItem('token');
+
   activityLogForm!: FormGroup;
   difficultyLevels = Object.values(DifficultyLevel);
   imgData = '';
@@ -64,7 +66,7 @@ export class ActivityLogComponent {
   }
 
   onSubmit(): void {
-    this.activityLogForm.value.userId = 31;
+    this.activityLogForm.value.userId = this.userId;
     if (this.activityLogForm.valid) {
       this.activityLogService
         .addActivityLog(this.activityLogForm.value)

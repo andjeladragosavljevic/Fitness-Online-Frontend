@@ -13,7 +13,7 @@
       <mat-card-content class="comment-body">
         {{ comment.content }}
       </mat-card-content>
-      @if(comment.userId == 31){
+      @if(comment.userId == this.userId){
       <mat-card-actions class="comment-actions">
         <button mat-button (click)="deleteComment(comment.id)">Delete</button>
       </mat-card-actions>

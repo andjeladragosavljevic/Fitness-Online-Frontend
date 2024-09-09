@@ -6,11 +6,12 @@
   @if(isDataLoaded){
   <h2 class="title">My Fitness Programs</h2>
 
-  <div *ngIf="error" class="error-message">
+  @if(error){
+  <div class="error-message">
     <p>{{ error }}</p>
   </div>
-
-  <div *ngIf="!error" class="program-list">
+  } @else{
+  <div class="program-list">
     <mat-card *ngFor="let program of myPrograms" class="program-card">
       <mat-card-content>
         <img
@@ -41,7 +42,7 @@
       </mat-card-actions>
     </mat-card>
   </div>
-  } @else {
+  } } @else {
   <div class="spinner-div">
     <div class="spinner"></div>
   </div>
@@ -55,5 +56,3 @@
     [pageSizeOptions]="[5, 10, 25, 100]"
   ></mat-paginator>
 </div>
-
-<!-- (click)="deleteProgram(program.id) -->

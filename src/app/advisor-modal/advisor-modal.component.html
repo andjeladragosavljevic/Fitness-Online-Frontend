@@ -1,0 +1,21 @@
+<mat-dialog-content>
+  <h2 class="title">Select Advisor and Send Message</h2>
+  <mat-form-field appearance="outline">
+    <mat-label>Select Advisor</mat-label>
+    <mat-select [(value)]="selectedAdvisorId">
+      <mat-option *ngFor="let advisor of advisors" [value]="advisor.id">
+        {{ advisor.firstName }} {{ advisor.lastName }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Message</mat-label>
+    <textarea matInput [(ngModel)]="messageContent"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button (click)="sendMessage()">Send</button>
+</mat-dialog-actions>

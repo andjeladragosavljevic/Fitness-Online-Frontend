@@ -15,7 +15,9 @@ import { CommonModule } from '@angular/common';
 export class SubscriptionComponent {
   categories: any[] = [];
 
-  userId: number = 31;
+  userId = Number(localStorage.getItem('userId'));
+  token = localStorage.getItem('token');
+
   userEmail: string = 'andjadragos@icloud.com';
 
   constructor(

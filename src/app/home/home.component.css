@@ -12,12 +12,12 @@ mat-expansion-panel {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: rgb(255, 217, 225);
+  color: rgb(204, 102, 122);
 }
 .exercise-title {
   font-weight: bold;
   margin-bottom: 10px;
-  color: rgb(255, 217, 225);
+  color: rgb(204, 102, 122);
 }
 .spinner-div {
   display: flex;

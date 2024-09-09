@@ -7,11 +7,11 @@ import { isDataSource } from '@angular/cdk/collections';
   providedIn: 'root',
 })
 export class RssFeedService {
-  private url = 'http://feeds.feedburner.com/AceFitFacts';
+  readonly baseUrl = 'http://localhost:8080/api/rss';
   constructor(private http: HttpClient) {}
 
   getFeed(): Observable<RssFeedItem[]> {
-    return this.http.get(this.url, { responseType: 'text' }).pipe(
+    return this.http.get(this.baseUrl, { responseType: 'text' }).pipe(
       map((response) => {
         const parser = new XMLParser();
         const jsonObj = parser.parse(response);

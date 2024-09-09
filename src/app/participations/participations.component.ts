@@ -17,6 +17,9 @@ export class ParticipationsComponent {
   error: string | null = null;
   current = true;
 
+  userId = Number(localStorage.getItem('userId'));
+  token = localStorage.getItem('token');
+
   constructor(private participationService: ParticipationService) {}
 
   ngOnInit(): void {
@@ -24,9 +27,8 @@ export class ParticipationsComponent {
   }
 
   loadParticipations(): void {
-    const userId = 31;
     this.participationService
-      .getUserParticipations(userId, this.current)
+      .getUserParticipations(this.userId, this.current)
       .subscribe({
         next: (data) => (this.participations = data),
         error: (err) => (this.error = 'Failed to load participations'),

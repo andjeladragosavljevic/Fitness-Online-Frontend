@@ -6,11 +6,13 @@
   @if(isDataLoaded){
   <h2 class="title">Available Fitness Programs</h2>
 
-  <div *ngIf="error" class="error-message">
+  @if(error){
+  <div class="error-message">
     <p>{{ error }}</p>
   </div>
+  } @else{
 
-  <div *ngIf="!error" class="program-list">
+  <div class="program-list">
     <mat-card *ngFor="let program of programs" class="program-card">
       <mat-card-content>
         <img
@@ -29,7 +31,7 @@
       </mat-card-actions>
     </mat-card>
   </div>
-  } @else {
+  } } @else {
   <div class="spinner-div">
     <div class="spinner"></div>
   </div>

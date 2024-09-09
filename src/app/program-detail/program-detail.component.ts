@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Program } from '../models/Program';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProgramService } from '../services/program.service';
 import { CurrencyPipe, DatePipe, NgFor, NgIf, NgStyle } from '@angular/common';
 import { AppMaterialModule } from '../app-material/app-material.module';
@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommentListComponent } from '../comment-list/comment-list.component';
 import moment from 'moment';
 import { ParticipationService } from '../services/participation.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-program-detail',
@@ -35,6 +36,9 @@ export class ProgramDetailComponent {
   currentDate = new Date();
   endDate = new Date();
 
+  userId = -1;
+  token: string | null = null;
+
   baseUrl = 'http://localhost:8080';
   sanitizedImages: string[] = [];
 
@@ -52,10 +56,19 @@ export class ProgramDetailComponent {
     private programService: ProgramService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private participationService: ParticipationService
+    private participationService: ParticipationService,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    if (typeof window !== 'undefined') {
+      this.userId = Number(localStorage.getItem('userId'));
+      this.token = localStorage.getItem('token');
+    }
+    if (this.token && this.authService.isTokenExpired(this.token)) {
+      this.router.navigate(['/login']);
+    }
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.loadProgramDetails(id);
@@ -105,7 +118,7 @@ export class ProgramDetailComponent {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.participationService
-          .participateInProgram(31, id, result.paymentMethod)
+          .participateInProgram(this.userId, id, result.paymentMethod)
           .subscribe({
             next: (response) => {
               if (
@@ -136,5 +149,12 @@ export class ProgramDetailComponent {
           });
       }
     });
+  }
+
+  isLoggedIn(): boolean {
+    if (typeof window !== 'undefined' && localStorage.getItem('token')) {
+      return !!localStorage.getItem('token');
+    }
+    return false;
   }
 }
